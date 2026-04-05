@@ -40,11 +40,11 @@
                         </div>
                         <div class="form-group full-width">
                             <label class="form-label" for="cep-busca">⚡ Busca Rápida por CEP (Auto-preenchimento)</label>
-                            <div style="display: flex; gap: 8px; margin-bottom: 8px;">
-                                <input type="text" id="cep-busca" class="form-input" placeholder="Ex: 01001-000" maxlength="9" style="max-width: 200px;">
-                                <button type="button" class="btn btn-secondary" id="btn-buscar-cep">Mágica: Buscar Coordenadas</button>
+                            <div style="position: relative; max-width: 300px; margin-bottom: 8px;">
+                                <input type="text" id="cep-busca" class="form-input" placeholder="Apenas números (Ex: 01001000)" maxlength="9" style="padding-right: 40px;">
+                                <i data-lucide="search" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: var(--dark-400); width: 18px; height: 18px;"></i>
                             </div>
-                            <span class="form-help" id="cep-feedback" style="margin-bottom: var(--space-4); display: block; font-weight: 600;">Descobre endereço, latitude e longitude automaticamente.</span>
+                            <span class="form-help" id="cep-feedback" style="margin-bottom: var(--space-4); display: flex; align-items: center; font-weight: 600;">Descobre endereço, latitude e longitude automaticamente.</span>
                         </div>
                         <div class="form-group full-width">
                             <label class="form-label" for="id_endereco">Endereço da Instalação *</label>
@@ -194,18 +194,32 @@
         document.getElementById('loading-overlay').classList.add('active');
     });
 
-    // Bônus: Busca Automática por CEP + Nominatim
-    document.getElementById('btn-buscar-cep').addEventListener('click', async function() {
-        const cep = document.getElementById('cep-busca').value.replace(/\D/g, '');
+    // Bônus: Busca Automática por CEP + Nominatim ao digitar
+    document.getElementById('cep-busca').addEventListener('input', async function(e) {
+        let value = e.target.value.replace(/\D/g, ''); // Remove não números
+        
+        // Formatar o CEP
+        if (value.length > 5) {
+            e.target.value = value.substring(0,5) + '-' + value.substring(5,8);
+        } else {
+            e.target.value = value;
+        }
+
+        const cep = value;
         const feedback = document.getElementById('cep-feedback');
         
         if (cep.length !== 8) {
-            feedback.textContent = '❌ CEP inválido. Digite 8 números (somente números ou formato 00000-000).';
-            feedback.style.color = 'var(--danger)';
+            if (cep.length === 0) {
+                feedback.innerHTML = 'Descobre endereço, latitude e longitude automaticamente.';
+                feedback.style.color = 'var(--dark-400)';
+            } else {
+                feedback.innerHTML = 'Aguardando 8 dígitos...';
+                feedback.style.color = 'var(--solar-500)';
+            }
             return;
         }
         
-        feedback.textContent = '⏳ Buscando endereço viaCEP...';
+        feedback.innerHTML = '<div class="spinner" style="width: 14px; height: 14px; border-width: 2px; margin-right: 6px;"></div> Buscando endereço viaCEP...';
         feedback.style.color = 'var(--solar-600)';
         
         try {
@@ -222,20 +236,26 @@
             const enderecoFormatado = `${cepData.logradouro}, ${cepData.bairro}, ${cepData.localidade} - ${cepData.uf}`;
             document.getElementById('id_endereco').value = enderecoFormatado;
             
-            feedback.textContent = '⏳ Endereço encontrado. Buscando coordenadas via satélite (Latitude/Longitude)...';
+            feedback.innerHTML = '<div class="spinner" style="width: 14px; height: 14px; border-width: 2px; margin-right: 6px;"></div> Endereço encontrado. Buscando coordenadas satélite...';
             
             // 2. Buscando Coordenadas via Nominatim (OpenStreetMap)
-            // Query simples com rua, cidade e estado aumenta precisão
             const query = encodeURIComponent(`${cepData.logradouro}, ${cepData.localidade}, ${cepData.uf}, Brazil`);
             const nominatimResponse = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${query}&limit=1`);
             const geoData = await nominatimResponse.json();
             
             if (geoData && geoData.length > 0) {
-                // Forçar o valor no input, formatando para o padrão que a backend aguarda (ponto ao invés de vírgula)
+                // Forçar o valor no input
                 document.getElementById('id_latitude').value = parseFloat(geoData[0].lat).toFixed(4);
                 document.getElementById('id_longitude').value = parseFloat(geoData[0].lon).toFixed(4);
-                feedback.textContent = '✨ Sucesso! Endereço e Coordenadas Mapeadas Automaticamente.';
+                feedback.textContent = '✨ Sucesso! Endereço e Coordenadas Mapeadas automaticamente.';
                 feedback.style.color = 'var(--success)';
+
+                // Micro-animação nos campos preenchidos
+                ['id_endereco', 'id_latitude', 'id_longitude'].forEach(id => {
+                    let el = document.getElementById(id).parentElement;
+                    el.style.animation = 'none';
+                    setTimeout(() => el.style.animation = 'pulseGlow 1s ease', 10);
+                });
             } else {
                 feedback.textContent = '⚠️ Endereço carregado, mas as coordenadas exatas não foram identificadas. Por favor, ajuste Lat/Long manualmente.';
                 feedback.style.color = 'var(--warning)';
@@ -247,5 +267,16 @@
             console.error(error);
         }
     });
+
+    // Injetar CSS de animação de pulso
+    const style = document.createElement('style');
+    style.innerHTML = `
+        @keyframes pulseGlow {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4); border-radius: var(--radius-lg); }
+            50% { transform: scale(1.02); box-shadow: 0 0 0 10px rgba(245, 158, 11, 0); border-radius: var(--radius-lg); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); border-radius: var(--radius-lg); }
+        }
+    `;
+    document.head.appendChild(style);
 </script>
 {% endblock %}

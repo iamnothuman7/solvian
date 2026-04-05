@@ -138,7 +138,10 @@
 {% endif %}
 
 <!-- Botões -->
-<div style="max-width: 1200px; margin: 0 auto var(--space-16); padding: 0 var(--space-6); display: flex; gap: var(--space-4); justify-content: center;">
+<div style="max-width: 1200px; margin: 0 auto var(--space-16); padding: 0 var(--space-6); display: flex; gap: var(--space-4); justify-content: center; flex-wrap: wrap;">
+    <button class="btn btn-success btn-lg" id="btn-whatsapp" style="background: #25D366; color: white;">
+        💬 Enviar Relatório via WhatsApp
+    </button>
     <a href="{% url 'core:manutencao' %}" class="btn btn-primary btn-lg" id="btn-nova-analise">
         🔄 Nova Análise
     </a>
@@ -166,6 +169,26 @@
         document.querySelectorAll('.dyn-color').forEach(function(el) {
             el.style.color = el.getAttribute('data-color');
         });
+
+        // WhatsApp Share for Maintenance
+        const btnWhatsapp = document.getElementById('btn-whatsapp');
+        if(btnWhatsapp) {
+            btnWhatsapp.addEventListener('click', function() {
+                const potencia = "{{ potencia_kwp }}";
+                const saude = "{{ resultado.resumo.saude_sistema.nivel }}";
+                const alertas = "{{ resultado.resumo.total_alertas }}";
+                
+                let texto = `🤖 *Relatório de Manutenção Solvian*\n\n`;
+                texto += `Verificamos o sistema solar de ${potencia} kWp:\n`;
+                texto += `🩺 *Saúde Atual:* ${saude}\n`;
+                texto += `⚠️ *Alertas Detectados:* ${alertas}\n\n`;
+                texto += `Esses dados são analisados por nossa Inteligência Artificial para predição de falhas.\n`;
+                texto += `Entre em contato para avaliar nossos planos e não perder rendimento! ⚡`;
+
+                const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(texto)}`;
+                window.open(url, '_blank');
+            });
+        }
     });
 </script>
 {% endblock %}
