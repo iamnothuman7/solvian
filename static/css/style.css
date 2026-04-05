@@ -710,7 +710,7 @@ ul, ol {
     outline: none;
     border-color: var(--solar-500);
     box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15);
-    background: var(--dark-800);
+    background: white;
 }
 
 .form-input::placeholder {

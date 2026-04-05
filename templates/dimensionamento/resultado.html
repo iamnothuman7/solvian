@@ -190,7 +190,7 @@
 <!-- ================================================================== -->
 <div style="max-width: 1200px; margin: var(--space-8) auto var(--space-16); padding: 0 var(--space-6); display: flex; gap: var(--space-4); justify-content: center; flex-wrap: wrap;">
     <!-- Botão para Gerar PDF -->
-    <form method="post" action="{% url 'relatorios:gerar_proposta_pdf' %}" id="form-pdf">
+    <form method="post" action="{% url 'relatorios:gerar_proposta_pdf' %}" id="form-pdf" style="margin: 0;">
         {% csrf_token %}
         <!-- Reenviar todos os dados do formulário original -->
         <input type="hidden" name="nome_cliente" value="{{ dados_cliente.nome }}">
@@ -215,6 +215,11 @@
         </button>
     </form>
 
+    <!-- Botão Enviar WhatsApp -->
+    <button class="btn btn-success btn-lg" id="btn-whatsapp" style="background: #25D366; color: white;">
+        💬 Resumo via WhatsApp
+    </button>
+
     <a href="{% url 'core:dimensionamento' %}" class="btn btn-outline btn-lg" id="btn-novo-projeto">
         🔄 Novo Dimensionamento
     </a>
@@ -227,6 +232,30 @@
         document.querySelectorAll('.bar-dynamic').forEach(function(bar) {
             bar.style.height = bar.getAttribute('data-height') + '%';
         });
+
+        const btnWhatsapp = document.getElementById('btn-whatsapp');
+        if(btnWhatsapp) {
+            btnWhatsapp.addEventListener('click', function() {
+                const cliente = "{{ dados_cliente.nome }}";
+                const potencia = "{{ resultado.potencia_real_kwp }}";
+                const paineis = "{{ resultado.qtd_paineis }}";
+                const valor = "{{ resultado.investimento|floatformat:2 }}";
+                const economia = "{{ resultado.economia_mensal|floatformat:2 }}";
+                const payback = "{{ resultado.payback_anos }}";
+                
+                let texto = `☀️ Olá ${cliente}!\n\n`;
+                texto += `Fizemos o dimensionamento rápido do seu Sistema de Energia Solar pela *Solvian*:\n\n`;
+                texto += `⚡ *Potência:* ${potencia} kWp\n`;
+                texto += `🔲 *Painéis:* ${paineis} unidades\n`;
+                texto += `💰 *Sua Economia:* R$ ${economia} por mês\n`;
+                texto += `⏱️ *Retorno do Investimento:* ${payback} anos\n`;
+                texto += `💲 *Investimento Aproximado:* R$ ${valor}\n\n`;
+                texto += `Qualquer dúvida, estou à disposição para conversarmos! 🚀`;
+
+                const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(texto)}`;
+                window.open(url, '_blank');
+            });
+        }
     });
 </script>
 {% endblock %}
