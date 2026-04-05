@@ -1,0 +1,31 @@
+# Ignorar arquivos Python compilados
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Ambiente virtual
+venv/
+env/
+
+# Banco de dados SQLite
+db.sqlite3
+db.sqlite3-journal
+
+# Arquivos estáticos coletados
+staticfiles/
+
+# Variáveis de ambiente
+.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Media uploads
+media/

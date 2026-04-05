@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Proposta Comercial — Solvian Energy</title>
+    <style>
+        /* ================================================================
+           PDF STYLES — Otimizado para impressão via WeasyPrint
+           ================================================================ */
+
+        @page {
+            size: A4;
+            margin: 25mm 20mm 30mm 20mm;
+
+            @bottom-center {
+                content: "Proposta gerada por Solvian — solvian.com.br";
+                font-size: 8pt;
+                color: #94A3B8;
+            }
+
+            @bottom-right {
+                content: "Página " counter(page) " de " counter(pages);
+                font-size: 8pt;
+                color: #94A3B8;
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            font-size: 10pt;
+            line-height: 1.5;
+            color: #1E293B;
+        }
+
+        /* ================================================================
+           CABEÇALHO
+           ================================================================ */
+
+        .pdf-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #F59E0B;
+            margin-bottom: 25px;
+        }
+
+        .pdf-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pdf-brand-name {
+            font-size: 22pt;
+            font-weight: 800;
+            color: #F59E0B;
+        }
+
+        .pdf-brand-tagline {
+            font-size: 8pt;
+            color: #64748B;
+        }
+
+        .pdf-header-right {
+            text-align: right;
+            font-size: 9pt;
+            color: #475569;
+        }
+
+        .pdf-title {
+            font-size: 18pt;
+            font-weight: 800;
+            color: #0F172A;
+            text-align: center;
+            margin: 25px 0 5px;
+        }
+
+        .pdf-subtitle {
+            text-align: center;
+            color: #64748B;
+            font-size: 10pt;
+            margin-bottom: 25px;
+        }
+
+        /* ================================================================
+           SEÇÕES
+           ================================================================ */
+
+        .pdf-section {
+            margin-bottom: 20px;
+            page-break-inside: avoid;
+        }
+
+        .pdf-section-title {
+            font-size: 12pt;
+            font-weight: 700;
+            color: #0F172A;
+            padding: 8px 12px;
+            background: #FEF3C7;
+            border-left: 4px solid #F59E0B;
+            margin-bottom: 12px;
+        }
+
+        /* ================================================================
+           TABELAS
+           ================================================================ */
+
+        .pdf-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+        }
+
+        .pdf-table th,
+        .pdf-table td {
+            padding: 8px 12px;
+            text-align: left;
+            border-bottom: 1px solid #E2E8F0;
+        }
+
+        .pdf-table th {
+            background: #F1F5F9;
+            font-weight: 600;
+            font-size: 9pt;
+            color: #475569;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .pdf-table .value {
+            text-align: right;
+            font-weight: 600;
+        }
+
+        .pdf-table .highlight {
+            color: #059669;
+            font-weight: 700;
+        }
+
+        .pdf-table .cost {
+            color: #DC2626;
+        }
+
+        .pdf-table .total-row {
+            background: #FEF3C7;
+            font-weight: 700;
+            border-top: 2px solid #F59E0B;
+        }
+
+        /* ================================================================
+           CARDS
+           ================================================================ */
+
+        .pdf-kpi-grid {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .pdf-kpi {
+            flex: 1;
+            text-align: center;
+            padding: 12px 8px;
+            border: 1px solid #E2E8F0;
+            border-radius: 8px;
+        }
+
+        .pdf-kpi-value {
+            font-size: 16pt;
+            font-weight: 800;
+            color: #F59E0B;
+        }
+
+        .pdf-kpi-label {
+            font-size: 8pt;
+            color: #64748B;
+            margin-top: 3px;
+        }
+
+        .pdf-kpi-featured {
+            background: #FEF3C7;
+            border-color: #F59E0B;
+        }
+
+        /* ================================================================
+           GRÁFICO MENSAL (barras CSS)
+           ================================================================ */
+
+        .pdf-chart {
+            margin: 15px 0;
+        }
+
+        .pdf-bar-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 3px;
+        }
+
+        .pdf-bar-label {
+            width: 60px;
+            font-size: 8pt;
+            color: #475569;
+            text-align: right;
+            padding-right: 8px;
+        }
+
+        .pdf-bar {
+            height: 14px;
+            background: linear-gradient(90deg, #F59E0B, #F97316);
+            border-radius: 2px;
+        }
+
+        .pdf-bar-value {
+            font-size: 8pt;
+            color: #475569;
+            padding-left: 6px;
+            white-space: nowrap;
+        }
+
+        /* ================================================================
+           RODAPÉ / TERMOS
+           ================================================================ */
+
+        .pdf-terms {
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 1px solid #E2E8F0;
+            font-size: 7pt;
+            color: #94A3B8;
+            line-height: 1.6;
+        }
+
+        .pdf-terms-title {
+            font-weight: 700;
+            color: #64748B;
+            margin-bottom: 5px;
+            font-size: 8pt;
+        }
+
+        /* Info box */
+        .pdf-info-box {
+            background: #F0FDF4;
+            border: 1px solid #BBF7D0;
+            border-radius: 6px;
+            padding: 10px 14px;
+            margin: 10px 0;
+            font-size: 9pt;
+        }
+
+        .pdf-info-box.warning {
+            background: #FEF3C7;
+            border-color: #FCD34D;
+        }
+
+        /* Two columns */
+        .pdf-two-col {
+            display: flex;
+            gap: 20px;
+        }
+
+        .pdf-two-col > div {
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ================================================================ -->
+    <!-- CABEÇALHO -->
+    <!-- ================================================================ -->
+    <div class="pdf-header">
+        <div class="pdf-brand">
+            <div>
+                <div class="pdf-brand-name">☀️ Solvian</div>
+                <div class="pdf-brand-tagline">Energia Solar Inteligente</div>
+            </div>
+        </div>
+        <div class="pdf-header-right">
+            {% if empresa.nome %}<strong>{{ empresa.nome }}</strong><br>{% endif %}
+            {% if empresa.telefone %}{{ empresa.telefone }}<br>{% endif %}
+            {% if empresa.email %}{{ empresa.email }}<br>{% endif %}
+            <strong>Data:</strong> {{ data_proposta|date:"d/m/Y" }}
+        </div>
+    </div>
+
+    <div class="pdf-title">Proposta de Sistema Fotovoltaico</div>
+    <div class="pdf-subtitle">Dimensionamento técnico e análise financeira completa</div>
+
+    <!-- ================================================================ -->
+    <!-- KPIs PRINCIPAIS -->
+    <!-- ================================================================ -->
+    <div class="pdf-kpi-grid">
+        <div class="pdf-kpi pdf-kpi-featured">
+            <div class="pdf-kpi-value">{{ resultado.potencia_real_kwp }} kWp</div>
+            <div class="pdf-kpi-label">Potência do Sistema</div>
+        </div>
+        <div class="pdf-kpi">
+            <div class="pdf-kpi-value">{{ resultado.qtd_paineis }}</div>
+            <div class="pdf-kpi-label">Painéis de {{ resultado.potencia_painel_wp }}W</div>
+        </div>
+        <div class="pdf-kpi">
+            <div class="pdf-kpi-value">R$ {{ resultado.economia_mensal|floatformat:0 }}</div>
+            <div class="pdf-kpi-label">Economia Mensal</div>
+        </div>
+        <div class="pdf-kpi">
+            <div class="pdf-kpi-value">{{ resultado.payback_anos }} anos</div>
+            <div class="pdf-kpi-label">Retorno do Investimento</div>
+        </div>
+    </div>
+
+    <!-- ================================================================ -->
+    <!-- DADOS DO CLIENTE -->
+    <!-- ================================================================ -->
+    <div class="pdf-section">
+        <div class="pdf-section-title">👤 Dados do Cliente</div>
+        <table class="pdf-table">
+            <tr>
+                <td><strong>Cliente:</strong></td>
+                <td>{{ cliente.nome }}</td>
+                <td><strong>Endereço:</strong></td>
+                <td>{{ cliente.endereco }}</td>
+            </tr>
+            <tr>
+                <td><strong>E-mail:</strong></td>
+                <td>{{ cliente.email|default:"-" }}</td>
+                <td><strong>Telefone:</strong></td>
+                <td>{{ cliente.telefone|default:"-" }}</td>
+            </tr>
+            <tr>
+                <td><strong>Coordenadas:</strong></td>
+                <td colspan="3">Lat: {{ localizacao.latitude }} / Lon: {{ localizacao.longitude }}</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- ================================================================ -->
+    <!-- DADOS DE IRRADIAÇÃO SOLAR -->
+    <!-- ================================================================ -->
+    <div class="pdf-section">
+        <div class="pdf-section-title">🛰️ Dados de Irradiação Solar (Satélite)</div>
+
+        <div class="pdf-info-box">
+            <strong>Fonte:</strong> {{ satelite.fonte }}<br>
+            <strong>Irradiação Média Anual:</strong> {{ satelite.irradiacao_media_anual }} kWh/m²/dia |
+            <strong>Temperatura Média:</strong> {{ satelite.temperatura_media }}°C
+        </div>
+
+        {% if resultado.analise_mensal %}
+        <div class="pdf-chart">
+            {% for mes in resultado.analise_mensal.meses %}
+            <div class="pdf-bar-row">
+                <span class="pdf-bar-label">{{ mes.mes|truncatechars:3 }}</span>
+                <div class="pdf-bar" style="width: {{ mes.percentual }}%;"></div>
+                <span class="pdf-bar-value">{{ mes.geracao_kwh|floatformat:0 }} kWh</span>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- ================================================================ -->
+    <!-- DIMENSIONAMENTO TÉCNICO -->
+    <!-- ================================================================ -->
+    <div class="pdf-section">
+        <div class="pdf-section-title">🔧 Dimensionamento Técnico</div>
+
+        <div class="pdf-two-col">
+            <div>
+                <table class="pdf-table">
+                    <tr>
+                        <td>Consumo Médio Mensal</td>
+                        <td class="value">{{ consumo_mensal|floatformat:0 }} kWh</td>
+                    </tr>
+                    <tr>
+                        <td>Potência Necessária</td>
+                        <td class="value">{{ resultado.potencia_necessaria_kwp }} kWp</td>
+                    </tr>
+                    <tr>
+                        <td>Potência Real do Sistema</td>
+                        <td class="value" style="color: #F59E0B; font-weight: 800;">{{ resultado.potencia_real_kwp }} kWp</td>
+                    </tr>
+                    <tr>
+                        <td>Quantidade de Painéis</td>
+                        <td class="value">{{ resultado.qtd_paineis }} × {{ resultado.potencia_painel_wp }}W</td>
+                    </tr>
+                </table>
+            </div>
+            <div>
+                <table class="pdf-table">
+                    <tr>
+                        <td>Tipo de Telhado</td>
+                        <td class="value">{{ telhado.tipo }}</td>
+                    </tr>
+                    <tr>
+                        <td>Inclinação</td>
+                        <td class="value">{{ telhado.inclinacao }}°</td>
+                    </tr>
+                    <tr>
+                        <td>Orientação</td>
+                        <td class="value">{{ telhado.orientacao }}</td>
+                    </tr>
+                    <tr>
+                        <td>Área Necessária</td>
+                        <td class="value">{{ resultado.area_necessaria_m2 }} m²</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================================================================ -->
+    <!-- ANÁLISE FINANCEIRA -->
+    <!-- ================================================================ -->
+    <div class="pdf-section">
+        <div class="pdf-section-title">💰 Análise Financeira</div>
+        <table class="pdf-table">
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th style="text-align: right;">Valor</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Investimento Estimado</td>
+                    <td class="value cost">R$ {{ resultado.investimento|floatformat:2 }}</td>
+                </tr>
+                <tr>
+                    <td>Economia Mensal Estimada</td>
+                    <td class="value highlight">R$ {{ resultado.economia_mensal|floatformat:2 }}</td>
+                </tr>
+                <tr>
+                    <td>Economia Anual Estimada</td>
+                    <td class="value highlight">R$ {{ resultado.economia_anual|floatformat:2 }}</td>
+                </tr>
+                <tr>
+                    <td>Tempo de Retorno (Payback)</td>
+                    <td class="value">{{ resultado.payback_anos }} anos</td>
+                </tr>
+                <tr class="total-row">
+                    <td>Economia em 25 Anos (com reajuste de 8% a.a.)</td>
+                    <td class="value highlight">R$ {{ resultado.economia_25_anos|floatformat:2 }}</td>
+                </tr>
+                <tr>
+                    <td>ROI (Retorno sobre Investimento em 25 anos)</td>
+                    <td class="value highlight">{{ resultado.roi_percentual }}%</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="pdf-info-box warning">
+            <strong>Premissas:</strong> Tarifa atual: R$ {{ resultado.tarifa_energia|floatformat:2 }}/kWh |
+            Reajuste tarifário: 8% a.a. | Degradação dos painéis: 0,5% a.a. |
+            Custo de instalação: R$ {{ resultado.custo_por_wp|floatformat:2 }}/Wp
+        </div>
+    </div>
+
+    <!-- ================================================================ -->
+    <!-- IMPACTO AMBIENTAL -->
+    <!-- ================================================================ -->
+    <div class="pdf-section">
+        <div class="pdf-section-title">🌱 Impacto Ambiental</div>
+        <div class="pdf-info-box">
+            <strong>CO₂ evitado por ano:</strong> {{ resultado.co2_evitado_toneladas }} toneladas<br>
+            <strong>Equivalente a:</strong> {{ resultado.arvores_equivalentes }} árvores plantadas por ano
+        </div>
+    </div>
+
+    <!-- ================================================================ -->
+    <!-- TERMOS E CONDIÇÕES -->
+    <!-- ================================================================ -->
+    <div class="pdf-terms">
+        <div class="pdf-terms-title">Termos e Condições</div>
+        <p>
+            1. Esta proposta tem validade de 30 dias a partir da data de emissão.<br>
+            2. Os valores apresentados são estimativas baseadas em dados climatológicos da NASA POWER
+               e podem variar de acordo com condições locais específicas.<br>
+            3. O dimensionamento final deve ser validado por um engenheiro eletricista responsável.<br>
+            4. A economia estimada considera as premissas de reajuste tarifário e degradação descritas acima.<br>
+            5. A geração real pode variar em ±10% em relação à estimativa, dependendo de fatores como
+               sombreamento, sujeira e condições atmosféricas locais.<br>
+            6. Proposta gerada automaticamente pelo sistema Solvian — solvian.com.br
+        </p>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,189 @@
+{% extends 'base.html' %}
+
+{% block title %}Dimensionamento Solar — Solvian{% endblock %}
+
+{% block content %}
+<section class="section" style="padding-top: var(--space-12);">
+    <div class="form-container">
+        <div class="section-header" style="margin-bottom: var(--space-8);">
+            <div class="section-badge">☀️ Dimensionamento</div>
+            <h1 class="section-title">Dimensione seu Sistema Solar</h1>
+            <p class="section-subtitle">
+                Preencha os dados abaixo para receber o dimensionamento completo
+                com dados reais de irradiação solar via satélite NASA POWER.
+            </p>
+        </div>
+
+        <div class="form-card">
+            <form method="post" id="form-dimensionamento" action="{% url 'core:dimensionamento' %}">
+                {% csrf_token %}
+
+                <!-- ========================================================== -->
+                <!-- DADOS DO CLIENTE -->
+                <!-- ========================================================== -->
+                <div class="form-section">
+                    <h2 class="form-section-title">👤 Dados do Cliente</h2>
+                    <p class="form-section-subtitle">Informações do cliente para a proposta</p>
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label class="form-label" for="id_nome_cliente">Nome do Cliente *</label>
+                            {{ form.nome_cliente }}
+                            {% if form.nome_cliente.errors %}<span class="form-error">{{ form.nome_cliente.errors.0 }}</span>{% endif %}
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="id_email_cliente">E-mail</label>
+                            {{ form.email_cliente }}
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="id_telefone_cliente">Telefone</label>
+                            {{ form.telefone_cliente }}
+                        </div>
+                        <div class="form-group full-width">
+                            <label class="form-label" for="id_endereco">Endereço da Instalação *</label>
+                            {{ form.endereco }}
+                            {% if form.endereco.errors %}<span class="form-error">{{ form.endereco.errors.0 }}</span>{% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section-divider"></div>
+
+                <!-- ========================================================== -->
+                <!-- LOCALIZAÇÃO (coordenadas) -->
+                <!-- ========================================================== -->
+                <div class="form-section">
+                    <h2 class="form-section-title">📍 Localização Geográfica</h2>
+                    <p class="form-section-subtitle">
+                        Coordenadas do local de instalação — usadas para consultar dados de satélite.
+                        <a href="https://www.google.com/maps" target="_blank" style="color: var(--solar-600);">
+                            Encontrar no Google Maps →
+                        </a>
+                    </p>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label" for="id_latitude">Latitude *</label>
+                            {{ form.latitude }}
+                            <span class="form-help">Ex: -23.5505 (São Paulo)</span>
+                            {% if form.latitude.errors %}<span class="form-error">{{ form.latitude.errors.0 }}</span>{% endif %}
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="id_longitude">Longitude *</label>
+                            {{ form.longitude }}
+                            <span class="form-help">Ex: -46.6333 (São Paulo)</span>
+                            {% if form.longitude.errors %}<span class="form-error">{{ form.longitude.errors.0 }}</span>{% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section-divider"></div>
+
+                <!-- ========================================================== -->
+                <!-- CONSUMO DE ENERGIA -->
+                <!-- ========================================================== -->
+                <div class="form-section">
+                    <h2 class="form-section-title">⚡ Dados de Consumo</h2>
+                    <p class="form-section-subtitle">Informações da conta de energia do cliente</p>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label" for="id_consumo_mensal">Consumo Médio Mensal (kWh) *</label>
+                            {{ form.consumo_mensal_kwh }}
+                            <span class="form-help">{{ form.consumo_mensal_kwh.help_text }}</span>
+                            {% if form.consumo_mensal_kwh.errors %}<span class="form-error">{{ form.consumo_mensal_kwh.errors.0 }}</span>{% endif %}
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="id_tarifa_energia">Tarifa de Energia (R$/kWh) *</label>
+                            {{ form.tarifa_energia }}
+                            <span class="form-help">{{ form.tarifa_energia.help_text }}</span>
+                            {% if form.tarifa_energia.errors %}<span class="form-error">{{ form.tarifa_energia.errors.0 }}</span>{% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section-divider"></div>
+
+                <!-- ========================================================== -->
+                <!-- DADOS TÉCNICOS DO TELHADO -->
+                <!-- ========================================================== -->
+                <div class="form-section">
+                    <h2 class="form-section-title">🏠 Dados do Telhado</h2>
+                    <p class="form-section-subtitle">Características do telhado para instalação</p>
+                    <div class="form-grid-3">
+                        <div class="form-group">
+                            <label class="form-label" for="id_tipo_telhado">Tipo de Telhado *</label>
+                            {{ form.tipo_telhado }}
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="id_inclinacao">Inclinação (graus) *</label>
+                            {{ form.inclinacao_telhado }}
+                            <span class="form-help">{{ form.inclinacao_telhado.help_text }}</span>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="id_orientacao">Orientação *</label>
+                            {{ form.orientacao }}
+                            <span class="form-help">{{ form.orientacao.help_text }}</span>
+                        </div>
+                    </div>
+                    <div class="form-grid" style="margin-top: var(--space-4);">
+                        <div class="form-group">
+                            <label class="form-label" for="id_area_disponivel">Área Disponível (m²)</label>
+                            {{ form.area_disponivel }}
+                            <span class="form-help">{{ form.area_disponivel.help_text }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section-divider"></div>
+
+                <!-- ========================================================== -->
+                <!-- DADOS DA EMPRESA INTEGRADORA -->
+                <!-- ========================================================== -->
+                <div class="form-section">
+                    <h2 class="form-section-title">🏢 Empresa Integradora (opcional)</h2>
+                    <p class="form-section-subtitle">Dados que aparecerão na proposta em PDF</p>
+                    <div class="form-grid-3">
+                        <div class="form-group">
+                            <label class="form-label" for="id_nome_empresa">Nome da Empresa</label>
+                            {{ form.nome_empresa }}
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="id_telefone_empresa">Telefone</label>
+                            {{ form.telefone_empresa }}
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="id_email_empresa">E-mail</label>
+                            {{ form.email_empresa }}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ========================================================== -->
+                <!-- BOTÕES -->
+                <!-- ========================================================== -->
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary btn-lg" id="btn-calcular">
+                        🛰️ Calcular com Dados de Satélite
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- Loading Overlay -->
+<div class="loading-overlay" id="loading-overlay">
+    <div class="spinner"></div>
+    <p class="loading-text">Consultando satélite NASA POWER...</p>
+    <p class="loading-text" style="font-size: var(--font-size-sm); opacity: 0.6; margin-top: 4px;">
+        Calculando dimensionamento e gerando resultado
+    </p>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Mostrar loading ao submeter o formulário
+    document.getElementById('form-dimensionamento').addEventListener('submit', function() {
+        document.getElementById('loading-overlay').classList.add('active');
+    });
+</script>
+{% endblock %}

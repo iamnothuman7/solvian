@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Solvian — Energia Solar Inteligente | Dimensionamento Automatizado{% endblock %}
+
+{% block content %}
+<!-- ================================================================== -->
+<!-- HERO SECTION -->
+<!-- ================================================================== -->
+<section class="hero" id="hero">
+    <div class="hero-container">
+        <div class="hero-content">
+            <div class="hero-badge">
+                ☀️ Plataforma All-in-One para Energia Solar
+            </div>
+            <h1>
+                Dimensione sistemas solares com
+                <span>dados de satélite</span>
+                e inteligência artificial
+            </h1>
+            <p class="hero-description">
+                Gere propostas comerciais profissionais em minutos.
+                Integração automática com a NASA POWER para dados reais de irradiação
+                solar e IA para manutenção preditiva.
+            </p>
+            <div class="hero-actions">
+                <a href="{% url 'core:dimensionamento' %}" class="btn btn-primary btn-lg" id="btn-hero-dimensionar">
+                    ⚡ Dimensionar Sistema
+                </a>
+                <a href="{% url 'core:manutencao' %}" class="btn btn-secondary btn-lg" id="btn-hero-manutencao">
+                    🤖 Manutenção IA
+                </a>
+            </div>
+        </div>
+
+        <div class="hero-visual">
+            <div class="hero-stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">🛰️</div>
+                    <div class="stat-value">NASA</div>
+                    <div class="stat-label">Dados de Satélite</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📄</div>
+                    <div class="stat-value">PDF</div>
+                    <div class="stat-label">Propostas Profissionais</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🤖</div>
+                    <div class="stat-value">IA</div>
+                    <div class="stat-label">Manutenção Preditiva</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⚡</div>
+                    <div class="stat-value">100%</div>
+                    <div class="stat-label">Automatizado</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================================================================== -->
+<!-- FEATURES -->
+<!-- ================================================================== -->
+<section class="section" id="features">
+    <div class="container">
+        <div class="section-header">
+            <div class="section-badge">🚀 Funcionalidades</div>
+            <h2 class="section-title">Tudo o que você precisa em um só lugar</h2>
+            <p class="section-subtitle">
+                Do dimensionamento técnico à proposta comercial, passando pela manutenção preditiva com IA.
+            </p>
+        </div>
+
+        <div class="features-grid">
+            <div class="card">
+                <div class="card-icon solar">☀️</div>
+                <h3 class="card-title">Dimensionamento Solar</h3>
+                <p class="card-text">
+                    Cálculo preciso da potência, quantidade de painéis e geração estimada
+                    baseado no consumo real do cliente e dados climáticos da região.
+                </p>
+            </div>
+
+            <div class="card">
+                <div class="card-icon blue">🛰️</div>
+                <h3 class="card-title">Dados de Satélite</h3>
+                <p class="card-text">
+                    Integração direta com a API NASA POWER para obter irradiação solar
+                    real via satélite. Médias climatológicas de 30 anos para qualquer localização.
+                </p>
+            </div>
+
+            <div class="card">
+                <div class="card-icon green">📄</div>
+                <h3 class="card-title">Proposta em PDF</h3>
+                <p class="card-text">
+                    Gere documentos PDF profissionais com análise técnica e financeira
+                    completa, prontos para enviar ao cliente.
+                </p>
+            </div>
+
+            <div class="card">
+                <div class="card-icon orange">🤖</div>
+                <h3 class="card-title">Manutenção Preditiva</h3>
+                <p class="card-text">
+                    Inteligência Artificial com Scikit-learn detecta anomalias na geração
+                    e prevê necessidades de manutenção antes que problemas ocorram.
+                </p>
+            </div>
+
+            <div class="card">
+                <div class="card-icon blue">💰</div>
+                <h3 class="card-title">Análise Financeira</h3>
+                <p class="card-text">
+                    Cálculo automático de payback, ROI, economia mensal e projeção
+                    financeira em 25 anos com reajuste tarifário.
+                </p>
+            </div>
+
+            <div class="card">
+                <div class="card-icon green">🌱</div>
+                <h3 class="card-title">Impacto Ambiental</h3>
+                <p class="card-text">
+                    Calcule o CO₂ evitado e a equivalência em árvores plantadas.
+                    Mostre ao cliente o impacto positivo da energia solar.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================================================================== -->
+<!-- CTA SECTION -->
+<!-- ================================================================== -->
+<section class="section" style="background: var(--gradient-dark); padding: var(--space-16) var(--space-6);">
+    <div class="container" style="text-align: center;">
+        <h2 style="color: white; font-size: var(--font-size-3xl); font-weight: 800; margin-bottom: var(--space-4);">
+            Pronto para dimensionar seu primeiro sistema?
+        </h2>
+        <p style="color: var(--dark-400); font-size: var(--font-size-lg); margin-bottom: var(--space-8); max-width: 600px; margin-left: auto; margin-right: auto;">
+            Preencha o formulário de dimensionamento e receba uma proposta completa em segundos, com dados reais de satélite.
+        </p>
+        <a href="{% url 'core:dimensionamento' %}" class="btn btn-primary btn-lg" id="btn-cta">
+            ⚡ Começar Agora — É Gratuito
+        </a>
+    </div>
+</section>
+{% endblock %}

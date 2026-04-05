@@ -1,0 +1,232 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Resultado do Dimensionamento — Solvian{% endblock %}
+
+{% block content %}
+<!-- ================================================================== -->
+<!-- CABEÇALHO DO RESULTADO -->
+<!-- ================================================================== -->
+<div class="result-header">
+    <h1>Resultado do Dimensionamento</h1>
+    <p class="result-subtitle">
+        Projeto para <strong>{{ dados_cliente.nome }}</strong> — {{ dados_cliente.endereco }}
+    </p>
+    {% if dados_satelite.erro %}
+    <p style="color: var(--solar-400); font-size: var(--font-size-sm); margin-top: var(--space-2); position: relative; z-index: 1;">
+        ⚠️ {{ dados_satelite.erro }} — Usando dados estimados.
+    </p>
+    {% endif %}
+</div>
+
+<!-- ================================================================== -->
+<!-- KPIs PRINCIPAIS -->
+<!-- ================================================================== -->
+<div class="result-kpi-grid">
+    <div class="kpi-card highlight">
+        <div class="kpi-icon">⚡</div>
+        <div class="kpi-value">{{ resultado.potencia_real_kwp }} kWp</div>
+        <div class="kpi-label">Potência do Sistema</div>
+    </div>
+    <div class="kpi-card">
+        <div class="kpi-icon">🔲</div>
+        <div class="kpi-value">{{ resultado.qtd_paineis }}</div>
+        <div class="kpi-label">Painéis de {{ resultado.potencia_painel_wp }}W</div>
+    </div>
+    <div class="kpi-card">
+        <div class="kpi-icon">💰</div>
+        <div class="kpi-value">R$ {{ resultado.economia_mensal|floatformat:0 }}</div>
+        <div class="kpi-label">Economia Mensal</div>
+    </div>
+    <div class="kpi-card">
+        <div class="kpi-icon">📅</div>
+        <div class="kpi-value">{{ resultado.payback_anos }} anos</div>
+        <div class="kpi-label">Tempo de Retorno</div>
+    </div>
+</div>
+
+<!-- ================================================================== -->
+<!-- DETALHES TÉCNICOS + FINANCEIROS -->
+<!-- ================================================================== -->
+<div class="result-details">
+    <!-- Dados Técnicos -->
+    <div class="detail-card">
+        <h3 class="detail-card-title">🔧 Dados Técnicos</h3>
+        <div class="detail-row">
+            <span class="detail-label">Potência Necessária</span>
+            <span class="detail-value">{{ resultado.potencia_necessaria_kwp }} kWp</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Potência Real do Sistema</span>
+            <span class="detail-value">{{ resultado.potencia_real_kwp }} kWp</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Quantidade de Painéis</span>
+            <span class="detail-value">{{ resultado.qtd_paineis }} × {{ resultado.potencia_painel_wp }}W</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Geração Mensal Estimada</span>
+            <span class="detail-value positive">{{ resultado.geracao_mensal_kwh }} kWh</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Geração Anual Estimada</span>
+            <span class="detail-value positive">{{ resultado.geracao_anual_kwh }} kWh</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Área Necessária</span>
+            <span class="detail-value">{{ resultado.area_necessaria_m2 }} m²</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Eficiência do Sistema</span>
+            <span class="detail-value">{{ resultado.eficiencia_sistema|floatformat:0 }}%</span>
+        </div>
+    </div>
+
+    <!-- Dados Financeiros -->
+    <div class="detail-card">
+        <h3 class="detail-card-title">💰 Análise Financeira</h3>
+        <div class="detail-row">
+            <span class="detail-label">Investimento Estimado</span>
+            <span class="detail-value">R$ {{ resultado.investimento|floatformat:2 }}</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Economia Mensal</span>
+            <span class="detail-value positive">R$ {{ resultado.economia_mensal|floatformat:2 }}</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Economia Anual</span>
+            <span class="detail-value positive">R$ {{ resultado.economia_anual|floatformat:2 }}</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Payback Simples</span>
+            <span class="detail-value">{{ resultado.payback_anos }} anos</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Economia em 25 Anos</span>
+            <span class="detail-value positive">R$ {{ resultado.economia_25_anos|floatformat:2 }}</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">ROI (25 anos)</span>
+            <span class="detail-value positive">{{ resultado.roi_percentual }}%</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Tarifa Atual</span>
+            <span class="detail-value">R$ {{ resultado.tarifa_energia|floatformat:2 }}/kWh</span>
+        </div>
+    </div>
+
+    <!-- Dados do Satélite -->
+    <div class="detail-card">
+        <h3 class="detail-card-title">🛰️ Dados de Satélite</h3>
+        <div class="detail-row">
+            <span class="detail-label">Fonte dos Dados</span>
+            <span class="detail-value">{{ dados_satelite.fonte }}</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Coordenadas</span>
+            <span class="detail-value">{{ dados_satelite.latitude }}, {{ dados_satelite.longitude }}</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Irradiação Média Anual</span>
+            <span class="detail-value positive">{{ dados_satelite.irradiacao_media_anual }} kWh/m²/dia</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Temperatura Média</span>
+            <span class="detail-value">{{ dados_satelite.temperatura_media }}°C</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Irradiação Efetiva (com fator)</span>
+            <span class="detail-value">{{ resultado.irradiacao_efetiva }} kWh/m²/dia</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Fator de Orientação</span>
+            <span class="detail-value">{{ resultado.fator_orientacao }}</span>
+        </div>
+    </div>
+
+    <!-- Sustentabilidade -->
+    <div class="detail-card">
+        <h3 class="detail-card-title">🌱 Impacto Ambiental</h3>
+        <div class="detail-row">
+            <span class="detail-label">CO₂ Evitado (anual)</span>
+            <span class="detail-value positive">{{ resultado.co2_evitado_toneladas }} toneladas</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">Equivalente a Árvores</span>
+            <span class="detail-value positive">{{ resultado.arvores_equivalentes }} árvores/ano</span>
+        </div>
+        <div class="detail-row">
+            <span class="detail-label">CO₂ Evitado em 25 Anos</span>
+            <span class="detail-value positive">{{ resultado.co2_evitado_toneladas|floatformat:1 }} ton × 25 anos</span>
+        </div>
+    </div>
+</div>
+
+<!-- ================================================================== -->
+<!-- GRÁFICO DE GERAÇÃO MENSAL -->
+<!-- ================================================================== -->
+{% if resultado.analise_mensal %}
+<div class="chart-container" style="padding: var(--space-6) var(--space-6);">
+    <h3 class="chart-title">📊 Geração Estimada por Mês (kWh)</h3>
+    <div class="bar-chart">
+        {% for mes in resultado.analise_mensal.meses %}
+        <div class="bar-item">
+            <span class="bar-value">{{ mes.geracao_kwh|floatformat:0 }}</span>
+            <div class="bar bar-dynamic" data-height="{{ mes.percentual }}"></div>
+            <span class="bar-label">{{ mes.mes|truncatechars:3 }}</span>
+        </div>
+        {% endfor %}
+    </div>
+    <div style="display: flex; justify-content: space-between; padding: var(--space-4) 0 0; font-size: var(--font-size-sm); color: var(--dark-500); border-top: 1px solid var(--dark-200); margin-top: var(--space-4);">
+        <span>📈 Melhor mês: <strong style="color: var(--success);">{{ resultado.analise_mensal.totais.melhor_mes }}</strong></span>
+        <span>📉 Pior mês: <strong style="color: var(--danger);">{{ resultado.analise_mensal.totais.pior_mes }}</strong></span>
+        <span>⚡ Total anual: <strong style="color: var(--dark-800);">{{ resultado.analise_mensal.totais.geracao_anual_kwh|floatformat:0 }} kWh</strong></span>
+    </div>
+</div>
+{% endif %}
+
+<!-- ================================================================== -->
+<!-- BOTÕES DE AÇÃO -->
+<!-- ================================================================== -->
+<div style="max-width: 1200px; margin: var(--space-8) auto var(--space-16); padding: 0 var(--space-6); display: flex; gap: var(--space-4); justify-content: center; flex-wrap: wrap;">
+    <!-- Botão para Gerar PDF -->
+    <form method="post" action="{% url 'relatorios:gerar_proposta_pdf' %}" id="form-pdf">
+        {% csrf_token %}
+        <!-- Reenviar todos os dados do formulário original -->
+        <input type="hidden" name="nome_cliente" value="{{ dados_cliente.nome }}">
+        <input type="hidden" name="email_cliente" value="{{ dados_cliente.email }}">
+        <input type="hidden" name="telefone_cliente" value="{{ dados_cliente.telefone }}">
+        <input type="hidden" name="endereco" value="{{ dados_cliente.endereco }}">
+        <input type="hidden" name="latitude" value="{{ dados_cliente.latitude }}">
+        <input type="hidden" name="longitude" value="{{ dados_cliente.longitude }}">
+        <input type="hidden" name="consumo_mensal_kwh" value="{{ consumo_mensal_kwh }}">
+        <input type="hidden" name="tarifa_energia" value="{{ resultado.tarifa_energia }}">
+        <input type="hidden" name="tipo_telhado" value="{{ resultado.tipo_telhado }}">
+        <input type="hidden" name="inclinacao_telhado" value="{{ resultado.inclinacao }}">
+        <input type="hidden" name="orientacao" value="{{ resultado.orientacao }}">
+        {% if resultado.area_disponivel_m2 %}
+        <input type="hidden" name="area_disponivel" value="{{ resultado.area_disponivel_m2 }}">
+        {% endif %}
+        <input type="hidden" name="nome_empresa" value="{{ dados_empresa.nome }}">
+        <input type="hidden" name="telefone_empresa" value="{{ dados_empresa.telefone }}">
+        <input type="hidden" name="email_empresa" value="{{ dados_empresa.email }}">
+        <button type="submit" class="btn btn-success btn-lg" id="btn-gerar-pdf">
+            📄 Baixar Proposta em PDF
+        </button>
+    </form>
+
+    <a href="{% url 'core:dimensionamento' %}" class="btn btn-outline btn-lg" id="btn-novo-projeto">
+        🔄 Novo Dimensionamento
+    </a>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.bar-dynamic').forEach(function(bar) {
+            bar.style.height = bar.getAttribute('data-height') + '%';
+        });
+    });
+</script>
+{% endblock %}

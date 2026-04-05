@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Sobre — Solvian{% endblock %}
+
+{% block content %}
+<!-- Hero -->
+<div class="about-hero">
+    <h1>Sobre o <span>Solvian</span></h1>
+    <p style="color: var(--dark-400); font-size: var(--font-size-lg); margin-top: var(--space-4); max-width: 600px; margin-left: auto; margin-right: auto;">
+        Sistema All-in-One para empresas de energia solar.
+        Desenvolvido como TCC em Sistemas de Informação.
+    </p>
+</div>
+
+<!-- O que é -->
+<section class="section">
+    <div class="container">
+        <div class="section-header">
+            <div class="section-badge">💡 Visão</div>
+            <h2 class="section-title">O que é o Solvian?</h2>
+            <p class="section-subtitle">
+                O Solvian é o MVP de uma startup B2B que oferece uma plataforma
+                completa para empresas de energia solar — do dimensionamento técnico
+                à manutenção preditiva com Inteligência Artificial.
+            </p>
+        </div>
+
+        <div class="features-grid">
+            <div class="card">
+                <div class="card-icon solar">🎯</div>
+                <h3 class="card-title">Missão</h3>
+                <p class="card-text">
+                    Democratizar o acesso a ferramentas profissionais de dimensionamento solar,
+                    usando dados reais de satélite e inteligência artificial.
+                </p>
+            </div>
+            <div class="card">
+                <div class="card-icon blue">🔬</div>
+                <h3 class="card-title">Diferencial</h3>
+                <p class="card-text">
+                    Integração direta com os dados da NASA POWER para obter irradiação solar
+                    precisa para qualquer localização geográfica do planeta.
+                </p>
+            </div>
+            <div class="card">
+                <div class="card-icon green">🚀</div>
+                <h3 class="card-title">Futuro</h3>
+                <p class="card-text">
+                    Expandir para um SaaS completo com CRM integrado, controle de estoque,
+                    monitoramento IoT e marketplace de equipamentos.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stack Tecnológica -->
+<section class="section" style="background: var(--dark-50);">
+    <div class="container">
+        <div class="section-header">
+            <div class="section-badge">🛠️ Tecnologia</div>
+            <h2 class="section-title">Stack Tecnológica</h2>
+        </div>
+        <div class="tech-stack-grid">
+            <div class="tech-card">
+                <div class="tech-card-icon">🐍</div>
+                <div class="tech-card-name">Django</div>
+                <div class="tech-card-desc">Framework web fullstack</div>
+            </div>
+            <div class="tech-card">
+                <div class="tech-card-icon">🛰️</div>
+                <div class="tech-card-name">NASA POWER</div>
+                <div class="tech-card-desc">API de dados climáticos</div>
+            </div>
+            <div class="tech-card">
+                <div class="tech-card-icon">🤖</div>
+                <div class="tech-card-name">Scikit-learn</div>
+                <div class="tech-card-desc">Machine Learning</div>
+            </div>
+            <div class="tech-card">
+                <div class="tech-card-icon">🐼</div>
+                <div class="tech-card-name">Pandas</div>
+                <div class="tech-card-desc">Análise de dados</div>
+            </div>
+            <div class="tech-card">
+                <div class="tech-card-icon">📄</div>
+                <div class="tech-card-name">WeasyPrint</div>
+                <div class="tech-card-desc">Geração de PDF</div>
+            </div>
+            <div class="tech-card">
+                <div class="tech-card-icon">🗄️</div>
+                <div class="tech-card-name">SQLite / PostgreSQL</div>
+                <div class="tech-card-desc">Banco de dados</div>
+            </div>
+            <div class="tech-card">
+                <div class="tech-card-icon">☁️</div>
+                <div class="tech-card-name">Render.com</div>
+                <div class="tech-card-desc">Deploy em nuvem</div>
+            </div>
+            <div class="tech-card">
+                <div class="tech-card-icon">🎨</div>
+                <div class="tech-card-name">CSS Moderno</div>
+                <div class="tech-card-desc">Design responsivo</div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

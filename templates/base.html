@@ -1,0 +1,110 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Solvian — Sistema All-in-One para empresas de energia solar. Dimensionamento automatizado, dados de satélite e manutenção preditiva com IA.">
+    <meta name="keywords" content="energia solar, dimensionamento fotovoltaico, proposta solar, manutenção preditiva, NASA POWER">
+    <meta name="author" content="Solvian Energy">
+    <title>{% block title %}Solvian — Energia Solar Inteligente{% endblock %}</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- ================================================================== -->
+    <!-- NAVBAR -->
+    <!-- ================================================================== -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="{% url 'core:home' %}" class="nav-brand">
+                <img src="{% static 'img/logo.png' %}" alt="Solvian" class="nav-logo">
+                <span class="nav-brand-text">Solvian</span>
+            </a>
+
+            <button class="nav-toggle" id="nav-toggle" aria-label="Menu">
+                <span class="hamburger"></span>
+            </button>
+
+            <ul class="nav-menu" id="nav-menu">
+                <li><a href="{% url 'core:home' %}" class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}">Início</a></li>
+                <li><a href="{% url 'core:dimensionamento' %}" class="nav-link {% if request.resolver_match.url_name == 'dimensionamento' %}active{% endif %}">Dimensionamento</a></li>
+                <li><a href="{% url 'core:manutencao' %}" class="nav-link {% if request.resolver_match.url_name == 'manutencao' %}active{% endif %}">Manutenção IA</a></li>
+                <li><a href="{% url 'core:sobre' %}" class="nav-link {% if request.resolver_match.url_name == 'sobre' %}active{% endif %}">Sobre</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- ================================================================== -->
+    <!-- CONTEÚDO PRINCIPAL -->
+    <!-- ================================================================== -->
+    <main class="main-content">
+        {% if messages %}
+        <div class="messages-container">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}" role="alert">
+                {{ message }}
+                <button class="alert-close" onclick="this.parentElement.remove()">×</button>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- ================================================================== -->
+    <!-- FOOTER -->
+    <!-- ================================================================== -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <img src="{% static 'img/logo.png' %}" alt="Solvian" class="footer-logo">
+                    <p class="footer-tagline">Energia Solar Inteligente</p>
+                    <p class="footer-description">
+                        Sistema All-in-One para empresas de energia solar.
+                        Dimensionamento automatizado com dados de satélite e IA.
+                    </p>
+                </div>
+                <div class="footer-links">
+                    <h4>Navegação</h4>
+                    <ul>
+                        <li><a href="{% url 'core:home' %}">Início</a></li>
+                        <li><a href="{% url 'core:dimensionamento' %}">Dimensionamento</a></li>
+                        <li><a href="{% url 'core:manutencao' %}">Manutenção Preditiva</a></li>
+                        <li><a href="{% url 'core:sobre' %}">Sobre</a></li>
+                    </ul>
+                </div>
+                <div class="footer-tech">
+                    <h4>Tecnologias</h4>
+                    <ul>
+                        <li>🛰️ API NASA POWER</li>
+                        <li>🤖 Scikit-learn (IA)</li>
+                        <li>🐍 Django Framework</li>
+                        <li>📄 WeasyPrint (PDF)</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Solvian — Todos os direitos reservados. TCC em Sistemas de Informação.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="{% static 'js/main.js' %}"></script>
+    <script>lucide.createIcons();</script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

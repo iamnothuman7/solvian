@@ -1,0 +1,18 @@
+# render.yaml — Configuração declarativa do Render.com
+# Documentação: https://render.com/docs/yaml-spec
+
+services:
+  - type: web
+    name: solvian
+    runtime: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn solvian.wsgi:application"
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: "False"
+      - key: ALLOWED_HOSTS
+        value: ".onrender.com"
+      - key: PYTHON_VERSION
+        value: "3.11.6"

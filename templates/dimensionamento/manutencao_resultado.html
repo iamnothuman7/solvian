@@ -1,0 +1,171 @@
+{% extends 'base.html' %}
+
+{% block title %}Resultado da Análise de Manutenção — Solvian{% endblock %}
+
+{% block content %}
+<!-- ================================================================== -->
+<!-- HEADER -->
+<!-- ================================================================== -->
+<div class="result-header">
+    <h1>🤖 Resultado da Análise Preditiva</h1>
+    <p class="result-subtitle">
+        Sistema de {{ potencia_kwp }} kWp — Análise com Scikit-learn (IsolationForest)
+    </p>
+</div>
+
+{% if resultado.sucesso %}
+<!-- ================================================================== -->
+<!-- KPIs -->
+<!-- ================================================================== -->
+<div class="result-kpi-grid">
+    <div class="kpi-card dyn-border" data-color="{{ resultado.resumo.saude_sistema.cor }}">
+        <div class="kpi-icon">{{ resultado.resumo.saude_sistema.icone }}</div>
+        <div class="kpi-value dyn-color" data-color="{{ resultado.resumo.saude_sistema.cor }}">{{ resultado.resumo.saude_sistema.nivel }}</div>
+        <div class="kpi-label">Saúde do Sistema</div>
+    </div>
+    <div class="kpi-card">
+        <div class="kpi-icon">📊</div>
+        <div class="kpi-value">{{ resultado.resumo.performance_ratio_media|floatformat:1 }}%</div>
+        <div class="kpi-label">Performance Ratio Média</div>
+    </div>
+    <div class="kpi-card">
+        <div class="kpi-icon">⚠️</div>
+        <div class="kpi-value">{{ resultado.resumo.total_alertas }}</div>
+        <div class="kpi-label">Alertas Detectados</div>
+    </div>
+    <div class="kpi-card">
+        <div class="kpi-icon">📉</div>
+        <div class="kpi-value">{{ resultado.resumo.desvio_global_percentual|floatformat:1 }}%</div>
+        <div class="kpi-label">Desvio Global</div>
+    </div>
+</div>
+
+<!-- ================================================================== -->
+<!-- GERAÇÃO REAL vs ESPERADA -->
+<!-- ================================================================== -->
+<div class="chart-container" style="margin-top: var(--space-10);">
+    <h3 class="chart-title">📊 Geração Real vs Esperada por Mês (kWh)</h3>
+    <div style="overflow-x: auto;">
+        <table style="width: 100%; border-collapse: collapse; font-size: var(--font-size-sm);">
+            <thead>
+                <tr style="border-bottom: 2px solid var(--dark-200);">
+                    <th style="text-align: left; padding: var(--space-3); color: var(--dark-600);">Mês</th>
+                    <th style="text-align: right; padding: var(--space-3); color: var(--dark-600);">Real (kWh)</th>
+                    <th style="text-align: right; padding: var(--space-3); color: var(--dark-600);">Esperado (kWh)</th>
+                    <th style="text-align: right; padding: var(--space-3); color: var(--dark-600);">Desvio</th>
+                    <th style="text-align: right; padding: var(--space-3); color: var(--dark-600);">PR</th>
+                    <th style="text-align: center; padding: var(--space-3); color: var(--dark-600);">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for mes in resultado.analise_mensal %}
+                <tr style="border-bottom: 1px solid var(--dark-100);" class="{% if mes.status == 'alerta' %}bg-danger-light{% endif %}">
+                    <td style="padding: var(--space-3); font-weight: 600;">{{ mes.mes }}</td>
+                    <td style="text-align: right; padding: var(--space-3);">{{ mes.geracao_real|floatformat:1 }}</td>
+                    <td style="text-align: right; padding: var(--space-3);">{{ mes.geracao_esperada|floatformat:1 }}</td>
+                    <td style="text-align: right; padding: var(--space-3); font-weight: 600;" class="{% if mes.desvio_percentual > 15 %}text-danger{% elif mes.desvio_percentual > 5 %}text-warning{% else %}text-success{% endif %}">
+                        {{ mes.desvio_percentual|floatformat:1 }}%
+                    </td>
+                    <td style="text-align: right; padding: var(--space-3);">{{ mes.performance_ratio|floatformat:3 }}</td>
+                    <td style="text-align: center; padding: var(--space-3);">
+                        {% if mes.status == 'alerta' %}
+                        <span style="color: var(--danger); font-weight: 700;">⚠️ Anomalia</span>
+                        {% else %}
+                        <span style="color: var(--success);">✅ Normal</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- ================================================================== -->
+<!-- ALERTAS -->
+<!-- ================================================================== -->
+{% if resultado.alertas %}
+<div style="max-width: 1200px; margin: var(--space-8) auto; padding: 0 var(--space-6);">
+    <h3 style="font-size: var(--font-size-xl); font-weight: 700; margin-bottom: var(--space-6);">
+        ⚠️ Alertas Detectados ({{ resultado.alertas|length }})
+    </h3>
+    {% for alerta in resultado.alertas %}
+    <div class="alert-card priority-{{ alerta.prioridade }}">
+        <div class="alert-card-header">
+            <span class="alert-card-title">{{ alerta.mes }} — {{ alerta.tipo }}</span>
+            <span class="priority-badge {{ alerta.prioridade }}">{{ alerta.prioridade }}</span>
+        </div>
+        <p style="color: var(--dark-600); font-size: var(--font-size-sm); line-height: 1.6;">
+            {{ alerta.descricao }}
+        </p>
+        <div style="display: flex; gap: var(--space-6); margin-top: var(--space-3); font-size: var(--font-size-xs); color: var(--dark-400);">
+            <span>Real: {{ alerta.geracao_real|floatformat:1 }} kWh</span>
+            <span>Esperado: {{ alerta.geracao_esperada|floatformat:1 }} kWh</span>
+            <span>Desvio: {{ alerta.desvio_percentual|floatformat:1 }}%</span>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<!-- ================================================================== -->
+<!-- RECOMENDAÇÕES -->
+<!-- ================================================================== -->
+{% if resultado.recomendacoes %}
+<div style="max-width: 1200px; margin: var(--space-8) auto var(--space-16); padding: 0 var(--space-6);">
+    <h3 style="font-size: var(--font-size-xl); font-weight: 700; margin-bottom: var(--space-6);">
+        📋 Recomendações de Manutenção
+    </h3>
+    {% for rec in resultado.recomendacoes %}
+    <div class="recommendation-card">
+        <div class="recommendation-icon">{{ rec.icone }}</div>
+        <div>
+            <div class="recommendation-title">{{ rec.titulo }}</div>
+            <p class="recommendation-text">{{ rec.descricao }}</p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+{% else %}
+<!-- Erro -->
+<div style="max-width: 800px; margin: var(--space-16) auto; padding: 0 var(--space-6); text-align: center;">
+    <div class="alert alert-error">
+        ❌ {{ resultado.erro }}
+    </div>
+</div>
+{% endif %}
+
+<!-- Botões -->
+<div style="max-width: 1200px; margin: 0 auto var(--space-16); padding: 0 var(--space-6); display: flex; gap: var(--space-4); justify-content: center;">
+    <a href="{% url 'core:manutencao' %}" class="btn btn-primary btn-lg" id="btn-nova-analise">
+        🔄 Nova Análise
+    </a>
+    <a href="{% url 'core:dimensionamento' %}" class="btn btn-outline btn-lg" id="btn-dimensionar">
+        ☀️ Dimensionar Sistema
+    </a>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .bg-danger-light { background: var(--danger-light); }
+    .text-danger { color: var(--danger); }
+    .text-warning { color: var(--warning); }
+    .text-success { color: var(--success); }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.dyn-border').forEach(function(el) {
+            el.style.border = '2px solid ' + el.getAttribute('data-color');
+        });
+        document.querySelectorAll('.dyn-color').forEach(function(el) {
+            el.style.color = el.getAttribute('data-color');
+        });
+    });
+</script>
+{% endblock %}

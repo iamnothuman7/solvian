@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block title %}Manutenção Preditiva com IA — Solvian{% endblock %}
+
+{% block content %}
+<section class="section" style="padding-top: var(--space-12);">
+    <div class="form-container">
+        <div class="section-header" style="margin-bottom: var(--space-8);">
+            <div class="section-badge">🤖 Inteligência Artificial</div>
+            <h1 class="section-title">Manutenção Preditiva</h1>
+            <p class="section-subtitle">
+                Analise a performance do seu sistema fotovoltaico com IA.
+                Detectamos anomalias na geração e recomendamos ações de manutenção.
+            </p>
+        </div>
+
+        <div class="form-card">
+            <form method="post" id="form-manutencao" action="{% url 'core:manutencao' %}">
+                {% csrf_token %}
+
+                <div class="form-section">
+                    <h2 class="form-section-title">⚡ Dados do Sistema Instalado</h2>
+                    <p class="form-section-subtitle">Informe a potência do sistema e a geração real dos últimos 12 meses</p>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label" for="id_potencia_instalada">Potência Instalada (kWp) *</label>
+                            {{ form.potencia_instalada_kwp }}
+                            {% if form.potencia_instalada_kwp.errors %}<span class="form-error">{{ form.potencia_instalada_kwp.errors.0 }}</span>{% endif %}
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="id_manut_latitude">Latitude *</label>
+                            {{ form.latitude }}
+                            {% if form.latitude.errors %}<span class="form-error">{{ form.latitude.errors.0 }}</span>{% endif %}
+                        </div>
+                    </div>
+
+                    <div class="form-grid" style="margin-top: var(--space-4);">
+                        <div class="form-group">
+                            <label class="form-label" for="id_manut_longitude">Longitude *</label>
+                            {{ form.longitude }}
+                            {% if form.longitude.errors %}<span class="form-error">{{ form.longitude.errors.0 }}</span>{% endif %}
+                        </div>
+                    </div>
+
+                    <div class="form-grid" style="margin-top: var(--space-4);">
+                        <div class="form-group full-width">
+                            <label class="form-label" for="id_geracao_real">Geração Real dos Últimos 12 Meses (kWh) *</label>
+                            {{ form.geracao_real_mensal }}
+                            <span class="form-help">{{ form.geracao_real_mensal.help_text }}</span>
+                            {% if form.geracao_real_mensal.errors %}<span class="form-error">{{ form.geracao_real_mensal.errors.0 }}</span>{% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary btn-lg" id="btn-analisar">
+                        🤖 Analisar com Inteligência Artificial
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- Loading -->
+<div class="loading-overlay" id="loading-overlay">
+    <div class="spinner"></div>
+    <p class="loading-text">Analisando dados com Inteligência Artificial...</p>
+    <p class="loading-text" style="font-size: var(--font-size-sm); opacity: 0.6; margin-top: 4px;">
+        Scikit-learn: Detectando anomalias com IsolationForest
+    </p>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.getElementById('form-manutencao').addEventListener('submit', function() {
+        document.getElementById('loading-overlay').classList.add('active');
+    });
+</script>
+{% endblock %}
