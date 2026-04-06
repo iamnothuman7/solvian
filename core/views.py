@@ -51,6 +51,7 @@ class DimensionamentoView(FormView):
             irradiacao_media=dados_satelite['irradiacao_media_anual'],
             dados_mensais=dados_satelite.get('dados_mensais', {}),
             tarifa_energia=dados['tarifa_energia'],
+            potencia_painel_wp=dados.get('potencia_painel_wp', 550),
             inclinacao=dados['inclinacao_telhado'],
             orientacao=dados['orientacao'],
             tipo_telhado=dados['tipo_telhado'],

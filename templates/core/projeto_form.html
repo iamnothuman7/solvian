@@ -89,20 +89,26 @@
                 <!-- CONSUMO DE ENERGIA -->
                 <!-- ========================================================== -->
                 <div class="form-section">
-                    <h2 class="form-section-title">⚡ Dados de Consumo</h2>
+                    <h2 class="form-section-title">⚡ Dados de Consumo & Concessionária</h2>
                     <p class="form-section-subtitle">Informações da conta de energia do cliente</p>
-                    <div class="form-grid">
+                    <div class="form-grid-3">
                         <div class="form-group">
-                            <label class="form-label" for="id_consumo_mensal">Consumo Médio Mensal (kWh) *</label>
-                            {{ form.consumo_mensal_kwh }}
-                            <span class="form-help">{{ form.consumo_mensal_kwh.help_text }}</span>
-                            {% if form.consumo_mensal_kwh.errors %}<span class="form-error">{{ form.consumo_mensal_kwh.errors.0 }}</span>{% endif %}
+                            <label class="form-label" for="id_concessionaria">Concessionária *</label>
+                            {{ form.concessionaria }}
+                            <span class="form-help">{{ form.concessionaria.help_text }}</span>
+                            {% if form.concessionaria.errors %}<span class="form-error">{{ form.concessionaria.errors.0 }}</span>{% endif %}
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="id_tarifa_energia">Tarifa de Energia (R$/kWh) *</label>
                             {{ form.tarifa_energia }}
                             <span class="form-help">{{ form.tarifa_energia.help_text }}</span>
                             {% if form.tarifa_energia.errors %}<span class="form-error">{{ form.tarifa_energia.errors.0 }}</span>{% endif %}
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="id_consumo_mensal">Consumo Médio (kWh) *</label>
+                            {{ form.consumo_mensal_kwh }}
+                            <span class="form-help">{{ form.consumo_mensal_kwh.help_text }}</span>
+                            {% if form.consumo_mensal_kwh.errors %}<span class="form-error">{{ form.consumo_mensal_kwh.errors.0 }}</span>{% endif %}
                         </div>
                     </div>
                 </div>
@@ -113,8 +119,8 @@
                 <!-- DADOS TÉCNICOS DO TELHADO -->
                 <!-- ========================================================== -->
                 <div class="form-section">
-                    <h2 class="form-section-title">🏠 Dados do Telhado</h2>
-                    <p class="form-section-subtitle">Características do telhado para instalação</p>
+                    <h2 class="form-section-title">🏠 Dados Técnicos (Telhado e Painéis)</h2>
+                    <p class="form-section-subtitle">Características do telhado e especificação dos módulos solares</p>
                     <div class="form-grid-3">
                         <div class="form-group">
                             <label class="form-label" for="id_tipo_telhado">Tipo de Telhado *</label>
@@ -132,6 +138,11 @@
                         </div>
                     </div>
                     <div class="form-grid" style="margin-top: var(--space-4);">
+                        <div class="form-group">
+                            <label class="form-label" for="id_potencia_painel">Potência do Módulo (Wp) *</label>
+                            {{ form.potencia_painel_wp }}
+                            <span class="form-help">{{ form.potencia_painel_wp.help_text }}</span>
+                        </div>
                         <div class="form-group">
                             <label class="form-label" for="id_area_disponivel">Área Disponível (m²)</label>
                             {{ form.area_disponivel }}
@@ -268,9 +279,61 @@
         }
     });
 
-    // Injetar CSS de animação de pulso
+    // ==== MÁSCARA DECLARATIVA DE TELEFONE ====
+    function masksPhone(e) {
+        let val = e.target.value.replace(/\D/g, ''); // Remove tudo que não é dígito
+        if (val.length === 0) { e.target.value = ''; return; }
+        if (val.length <= 2) { e.target.value = '(' + val; return; }
+        if (val.length <= 7) { e.target.value = '(' + val.substring(0,2) + ') ' + val.substring(2); return; }
+        // Se maior, formata perfeitamente como celular
+        e.target.value = '(' + val.substring(0,2) + ') ' + val.substring(2,7) + '-' + val.substring(7,11);
+    }
+    const telCliente = document.getElementById('id_telefone_cliente');
+    const telEmp = document.getElementById('id_telefone_empresa');
+    if(telCliente) telCliente.addEventListener('input', masksPhone);
+    if(telEmp) telEmp.addEventListener('input', masksPhone);
+
+    // ==== LÓGICA DE TARIFA AUTO (CONCESSIONÁRIA) ====
+    const TARIFA_DATABASE = {
+        'enel': 0.85,
+        'cemig': 0.95,
+        'cpfl': 0.89,
+        'light': 0.98,
+        'coelba': 0.82,
+        'copel': 0.80,
+        'neoenergia': 0.88,
+        'equatorial': 0.92,
+    };
+    const inputConcessionaria = document.getElementById('id_concessionaria');
+    const inputTarifa = document.getElementById('id_tarifa_energia');
+
+    if(inputConcessionaria && inputTarifa) {
+        inputConcessionaria.addEventListener('change', function(e) {
+            const cod = e.target.value;
+            if (cod === 'outra' || !TARIFA_DATABASE[cod]) {
+                inputTarifa.removeAttribute('readonly');
+                inputTarifa.classList.remove('bg-disabled');
+                inputTarifa.style.background = '#FFFFFF';
+                // Animacao para alertar o usuario
+                inputTarifa.style.animation = 'pulseGlow 1s ease';
+                setTimeout(() => inputTarifa.style.animation = 'none', 1000);
+            } else {
+                inputTarifa.setAttribute('readonly', 'readonly');
+                // Adiciona background sutil cinza pra travar visualmente
+                inputTarifa.style.background = 'var(--dark-100)';
+                inputTarifa.value = TARIFA_DATABASE[cod].toFixed(2);
+                
+                // Micro-animação para mostrar que preencheu!
+                inputTarifa.parentElement.style.animation = 'pulseGlow 1s ease';
+                setTimeout(() => inputTarifa.parentElement.style.animation = 'none', 1000);
+            }
+        });
+    }
+
+    // Injetar CSS de animação e disable helper
     const style = document.createElement('style');
     style.innerHTML = `
+        .bg-disabled { background: var(--dark-100) !important; color: var(--dark-500) !important; cursor: not-allowed; }
         @keyframes pulseGlow {
             0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4); border-radius: var(--radius-lg); }
             50% { transform: scale(1.02); box-shadow: 0 0 0 10px rgba(245, 158, 11, 0); border-radius: var(--radius-lg); }

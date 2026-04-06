@@ -220,6 +220,15 @@
         💬 Resumo via WhatsApp
     </button>
 
+    <!-- Botão Web Search MercadoLivre/Shopping -->
+    <a href="https://lista.mercadolivre.com.br/kit-energia-solar-on-grid-{{ resultado.potencia_real_kwp|floatformat:0 }}-kwp"
+       target="_blank"
+       class="btn btn-outline btn-lg" 
+       id="btn-pesquisa-precos"
+       style="border-color: #3b82f6; color: #3b82f6;">
+        🛒 Buscar Kit {{ resultado.potencia_real_kwp }} kWp na Web
+    </a>
+
     <a href="{% url 'core:dimensionamento' %}" class="btn btn-outline btn-lg" id="btn-novo-projeto">
         🔄 Novo Dimensionamento
     </a>

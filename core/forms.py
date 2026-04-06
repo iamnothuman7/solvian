@@ -86,8 +86,31 @@ class DimensionamentoForm(forms.Form):
     )
 
     # =========================================================================
-    # DADOS DO CONSUMO
+    # DADOS DO CONSUMO & CONCESSIONÁRIA
     # =========================================================================
+    
+    CONCESSIONARIA_CHOICES = [
+        ('', '--- Selecione a Concessionária ---'),
+        ('enel', 'Enel SP'),
+        ('cemig', 'CEMIG'),
+        ('cpfl', 'CPFL'),
+        ('light', 'Light'),
+        ('coelba', 'Coelba'),
+        ('copel', 'COPEL'),
+        ('neoenergia', 'Neoenergia'),
+        ('equatorial', 'Equatorial'),
+        ('outra', 'Outra / Manual'),
+    ]
+
+    concessionaria = forms.ChoiceField(
+        label='Concessionária de Energia',
+        choices=CONCESSIONARIA_CHOICES,
+        widget=forms.Select(attrs={
+            'class': 'form-select',
+            'id': 'id_concessionaria',
+        }),
+        help_text='A tarifa será preenchida automaticamente'
+    )
 
     consumo_mensal_kwh = forms.FloatField(
         label='Consumo Médio Mensal (kWh)',
@@ -106,17 +129,39 @@ class DimensionamentoForm(forms.Form):
         validators=[MinValueValidator(0.01)],
         initial=0.85,
         widget=forms.NumberInput(attrs={
-            'class': 'form-input',
+            'class': 'form-input bg-disabled',
             'placeholder': 'Ex: 0.85',
             'step': '0.01',
             'id': 'id_tarifa_energia',
+            'readonly': 'readonly',
         }),
-        help_text='Valor do kWh na sua conta de luz'
+        help_text='Preenchido automaticamente. Selecione "Outra" para editar.'
     )
 
     # =========================================================================
-    # DADOS TÉCNICOS DO TELHADO
+    # DADOS TÉCNICOS DO TELHADO & PAINÉIS
     # =========================================================================
+
+    POTENCIA_PAINEL_CHOICES = [
+        (400, '400W'),
+        (450, '450W'),
+        (500, '500W'),
+        (550, '550W (Padrão)'),
+        (600, '600W'),
+        (650, '650W'),
+    ]
+
+    potencia_painel_wp = forms.TypedChoiceField(
+        label='Potência dos Painéis (Wp)',
+        choices=POTENCIA_PAINEL_CHOICES,
+        coerce=int,
+        initial=550,
+        widget=forms.Select(attrs={
+            'class': 'form-select',
+            'id': 'id_potencia_painel',
+        }),
+        help_text='Capacidade individual de cada placa'
+    )
 
     TIPO_TELHADO_CHOICES = [
         ('ceramica', 'Cerâmica / Barro'),
