@@ -28,8 +28,7 @@
     <nav class="navbar" id="navbar">
         <div class="nav-container">
             <a href="{% url 'core:home' %}" class="nav-brand">
-                <img src="{% static 'img/logo.png' %}" alt="Solvian" class="nav-logo">
-                <span class="nav-brand-text">Solvian</span>
+                <img src="{% static 'img/logo.png' %}" alt="Solvian" class="nav-logo" style="height: 48px;">
             </a>
 
             <button class="nav-toggle" id="nav-toggle" aria-label="Menu">
@@ -86,18 +85,11 @@
                         <li><a href="{% url 'core:sobre' %}">Sobre</a></li>
                     </ul>
                 </div>
-                <div class="footer-tech">
-                    <h4>Tecnologias</h4>
-                    <ul>
-                        <li>🛰️ API NASA POWER</li>
-                        <li>🤖 Scikit-learn (IA)</li>
-                        <li>🐍 Django Framework</li>
-                        <li>📄 WeasyPrint (PDF)</li>
-                    </ul>
+            <div class="footer-bottom" style="text-align: center;">
+                <div style="font-size: 24px; margin-bottom: var(--space-4); opacity: 0.8; letter-spacing: 12px;">
+                    🐍 ⚙️ 🌐 🎨 ⚡ 🛰️ 🤖
                 </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2025 Solvian — Todos os direitos reservados. TCC em Sistemas de Informação.</p>
+                <p>&copy; 2026 Solvian — Desenvolvido por Emannuel Mardyan.</p>
             </div>
         </div>
     </footer>

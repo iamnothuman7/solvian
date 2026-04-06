@@ -163,21 +163,6 @@
 </div>
 
 <!-- ================================================================== -->
-<!-- RAIO-X DE TETO (Simulador Visual) -->
-<!-- ================================================================== -->
-<div class="roof-container" style="padding: var(--space-6) var(--space-6);">
-    <h3 class="chart-title" style="margin-bottom: var(--space-2);">🏠 Mapa Visual do Telhado (Raio-X)</h3>
-    <p style="color: var(--dark-500); margin-bottom: var(--space-6); font-size: var(--font-size-sm);">
-        A representação espacial dos <strong style="color: var(--dark-800);">{{ resultado.qtd_paineis }}</strong> painéis de {{ resultado.potencia_painel_wp }}Wp sobre a estrutura projetada.
-    </p>
-    <div class="roof-perspective">
-        <div class="roof-grid" id="roof-grid">
-            <!-- Panels will be injected here via JavaScript -->
-        </div>
-    </div>
-</div>
-
-<!-- ================================================================== -->
 <!-- GRÁFICO DE GERAÇÃO MENSAL -->
 <!-- ================================================================== -->
 {% if resultado.analise_mensal %}
@@ -286,29 +271,6 @@
                 const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(texto)}`;
                 window.open(url, '_blank');
             });
-        }
-
-        // Lógica do Simulador Visual de Telhado (Raio-X)
-        const roofGrid = document.getElementById('roof-grid');
-        if(roofGrid) {
-            const qtd = parseInt("{{ resultado.qtd_paineis }}") || 0;
-            if(qtd > 0) {
-                // Desenhar as colunas para que pareçam retangulares e coesas
-                let cols = Math.ceil(Math.sqrt(qtd));
-                if(qtd % cols !== 0 && qtd > 10) { cols = Math.ceil(qtd / Math.ceil(qtd/cols)); }
-                roofGrid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
-                
-                for(let i=0; i<qtd; i++) {
-                    const panel = document.createElement('div');
-                    panel.className = 'roof-panel';
-                    // Delay sequencial de animação
-                    panel.style.animationDelay = `${i * 0.05}s`;
-                    roofGrid.appendChild(panel);
-                }
-            } else {
-                roofGrid.innerHTML = "Qtd de painéis inválida.";
-            }
-        }
     });
 </script>
 {% endblock %}
