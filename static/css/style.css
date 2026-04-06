@@ -1423,3 +1423,194 @@ ul, ol {
         height: 120px;
     }
 }
+
+/* ============================================================================
+   ROOF SIMULATOR (RAIO-X DE TETO)
+   ============================================================================ */
+
+.roof-container {
+    background: #FFFFFF;
+    border: 1px solid rgba(0,0,0,0.05);
+    border-radius: var(--radius-xl);
+    padding: var(--space-8);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    max-width: 1200px;
+    margin: var(--space-6) auto;
+    text-align: center;
+    overflow: hidden;
+}
+
+.roof-perspective {
+    perspective: 1000px;
+    margin: var(--space-8) auto;
+    display: inline-block;
+}
+
+.roof-grid {
+    display: grid;
+    gap: 4px;
+    background: #E4E4E7;
+    padding: 10px;
+    border-radius: var(--radius-sm);
+    transform: rotateX(50deg) rotateZ(-20deg);
+    box-shadow: 15px 15px 0px #D4D4D8;
+    transition: all 0.5s ease;
+}
+
+.roof-grid:hover {
+    transform: rotateX(55deg) rotateZ(-5deg) scale(1.05);
+    box-shadow: 5px 25px 15px rgba(0,0,0,0.1);
+}
+
+.roof-panel {
+    width: 40px;
+    height: 70px;
+    background: linear-gradient(135deg, #1D4ED8 0%, #1E3A8A 100%);
+    border: 1px solid #3B82F6;
+    border-radius: 2px;
+    box-shadow: inset 1px 1px 3px rgba(255,255,255,0.3);
+    position: relative;
+    animation: fadeInPanel 0.5s forwards;
+    opacity: 0;
+}
+
+.roof-panel::after {
+    content: '';
+    position: absolute;
+    top: 50%; left: 0; right: 0; height: 1px;
+    background: rgba(255,255,255,0.2);
+}
+
+@keyframes fadeInPanel {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================================
+   SOLAR BOT (ASSISTENTE VIRTUAL)
+   ============================================================================ */
+.solar-bot {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 1000;
+}
+
+.bot-trigger {
+    background: var(--gradient-solar);
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.bot-trigger:hover {
+    transform: scale(1.1);
+}
+
+.bot-window {
+    position: absolute;
+    bottom: 80px;
+    right: 0;
+    width: 320px;
+    background: #FFFFFF;
+    border-radius: var(--radius-xl);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    overflow: hidden;
+    display: none;
+    flex-direction: column;
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+.bot-window.active {
+    display: flex;
+    animation: slideUpBot 0.3s ease;
+}
+
+.bot-header {
+    background: var(--gradient-dark);
+    color: #FAFAFA;
+    padding: 15px;
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+    display: flex;
+    justify-content: space-between;
+}
+
+.bot-close {
+    cursor: pointer;
+    opacity: 0.7;
+}
+
+.bot-close:hover {
+    opacity: 1;
+}
+
+.bot-messages {
+    height: 250px;
+    padding: 15px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: #F9FAFB;
+}
+
+.bot-msg {
+    max-width: 85%;
+    padding: 10px 12px;
+    border-radius: 10px;
+    font-size: var(--font-size-xs);
+    line-height: 1.4;
+    animation: fadeInPanel 0.3s ease;
+}
+
+.bot-msg.ai {
+    background: #FFFFFF;
+    border: 1px solid rgba(0,0,0,0.05);
+    align-self: flex-start;
+    border-bottom-left-radius: 2px;
+    color: var(--dark-800);
+}
+
+.bot-msg.user {
+    background: #FEF3C7;
+    border: 1px solid #FCD34D;
+    align-self: flex-end;
+    border-bottom-right-radius: 2px;
+    color: var(--dark-900);
+}
+
+.bot-input-area {
+    display: flex;
+    border-top: 1px solid rgba(0,0,0,0.05);
+}
+
+.bot-input-area input {
+    flex: 1;
+    border: none;
+    padding: 15px;
+    outline: none;
+    font-size: var(--font-size-sm);
+}
+
+.bot-input-area button {
+    background: var(--orange-500);
+    border: none;
+    color: white;
+    padding: 0 15px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: var(--font-size-xl);
+}
+
+@keyframes slideUpBot {
+    from { opacity: 0; transform: translateY(20px); scale: 0.9; }
+    to { opacity: 1; transform: translateY(0); scale: 1; }
+}

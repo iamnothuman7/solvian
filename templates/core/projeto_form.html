@@ -189,6 +189,7 @@
 </section>
 
 <!-- Loading Overlay -->
+<!-- Loading Overlay -->
 <div class="loading-overlay" id="loading-overlay">
     <div class="spinner"></div>
     <p class="loading-text">Consultando satélite NASA POWER...</p>
@@ -196,6 +197,29 @@
         Calculando dimensionamento e gerando resultado
     </p>
 </div>
+
+<!-- ========================================================== -->
+<!-- SOLAR BOT: Assistente Virtual Flutuante -->
+<!-- ========================================================== -->
+<div class="solar-bot">
+    <div class="bot-trigger" id="bot-trigger" title="Falar com a IA">
+        🤖
+    </div>
+    <div class="bot-window" id="bot-window">
+        <div class="bot-header">
+            <span>☀️ Íris: IA da Solvian</span>
+            <span class="bot-close" id="bot-close">✖</span>
+        </div>
+        <div class="bot-messages" id="bot-messages">
+            <div class="bot-msg ai">Olá! 👋 Eu sou a Íris. Não quer preencher esse formulário chato? Deixa comigo!<br><br>Qual é a sua Concessionária (ex: Enel)?</div>
+        </div>
+        <div class="bot-input-area">
+            <input type="text" id="bot-input" placeholder="Digite sua resposta..." autocomplete="off">
+            <button id="bot-send">➭</button>
+        </div>
+    </div>
+</div>
+
 {% endblock %}
 
 {% block extra_js %}
@@ -203,6 +227,90 @@
     // Mostrar loading ao submeter o formulário
     document.getElementById('form-dimensionamento').addEventListener('submit', function() {
         document.getElementById('loading-overlay').classList.add('active');
+    });
+
+    // ==== LÓGICA DO SOLAR BOT ====
+    const botTrigger = document.getElementById('bot-trigger');
+    const botWindow = document.getElementById('bot-window');
+    const botClose = document.getElementById('bot-close');
+    const botInput = document.getElementById('bot-input');
+    const botSend = document.getElementById('bot-send');
+    const botMessages = document.getElementById('bot-messages');
+    
+    let botStep = 0;
+
+    function addBotMessage(text, sender) {
+        const msg = document.createElement('div');
+        msg.className = `bot-msg ${sender}`;
+        msg.innerHTML = text;
+        botMessages.appendChild(msg);
+        botMessages.scrollTop = botMessages.scrollHeight;
+    }
+
+    botTrigger.addEventListener('click', () => botWindow.classList.add('active'));
+    botClose.addEventListener('click', () => botWindow.classList.remove('active'));
+
+    function handleBotInput() {
+        const val = botInput.value.trim();
+        if(!val) return;
+        addBotMessage(val, 'user');
+        botInput.value = '';
+
+        setTimeout(() => {
+            if(botStep === 0) {
+                // Tentando adivinhar concessionaria via string similarity basica
+                let cons = 'outra';
+                const lower = val.toLowerCase();
+                if(lower.includes('enel')) cons = 'enel';
+                else if(lower.includes('cemig')) cons = 'cemig';
+                else if(lower.includes('cpfl')) cons = 'cpfl';
+                else if(lower.includes('light')) cons = 'light';
+                else if(lower.includes('coelba')) cons = 'coelba';
+                else if(lower.includes('copel')) cons = 'copel';
+
+                const selectCons = document.getElementById('id_concessionaria');
+                selectCons.value = cons;
+                // Dispara o change para auto-preencher tarifa
+                selectCons.dispatchEvent(new Event('change'));
+
+                addBotMessage(`Legal! Mapeei a tarifa da ${cons.toUpperCase()} automaticamente na plataforma. ⚡`, 'ai');
+                setTimeout(() => addBotMessage("Agora me diga, qual foi o total em Reais (R$) da sua última conta de luz?", 'ai'), 800);
+                botStep++;
+            } 
+            else if(botStep === 1) {
+                // Descobre valor 
+                const valorReais = parseFloat(val.replace(',', '.').replace(/[^\d.]/g, ''));
+                if(isNaN(valorReais)) {
+                    addBotMessage("Não consegui entender o valor. Digite apenas números, exemplo: 450", 'ai');
+                    return;
+                }
+                const tarifa = parseFloat(document.getElementById('id_tarifa_energia').value) || 0.85;
+                const kwh = Math.round(valorReais / tarifa);
+                document.getElementById('id_consumo_mensal').value = kwh;
+
+                addBotMessage(`Isso equivale a aproximadamente ${kwh} kWh/mês!`, 'ai');
+                setTimeout(() => addBotMessage("Falta pouco! Qual é seu CEP (apenas números)?", 'ai'), 800);
+                botStep++;
+            }
+            else if(botStep === 2) {
+                const cepInput = document.getElementById('cep-busca');
+                cepInput.value = val;
+                cepInput.dispatchEvent(new Event('input')); // Dispara a lógica de nominatim existente!
+                
+                addBotMessage("Maravilha! Buscando dados na NASA...", 'ai');
+                
+                setTimeout(() => {
+                    addBotMessage("Pronto! Deixa comigo que vou enviar a proposta agora mesmo! 🚀", 'ai');
+                    setTimeout(() => document.getElementById('form-dimensionamento').submit(), 1500);
+                }, 2000);
+                botStep++;
+            }
+        }, 500);
+    }
+
+    botSend.addEventListener('click', handleBotInput);
+    botInput.addEventListener('keypress', (e) => {
+        if(e.key === 'Enter') handleBotInput();
     });
 
     // Bônus: Busca Automática por CEP + Nominatim ao digitar

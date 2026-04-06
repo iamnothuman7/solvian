@@ -163,6 +163,21 @@
 </div>
 
 <!-- ================================================================== -->
+<!-- RAIO-X DE TETO (Simulador Visual) -->
+<!-- ================================================================== -->
+<div class="roof-container" style="padding: var(--space-6) var(--space-6);">
+    <h3 class="chart-title" style="margin-bottom: var(--space-2);">🏠 Mapa Visual do Telhado (Raio-X)</h3>
+    <p style="color: var(--dark-500); margin-bottom: var(--space-6); font-size: var(--font-size-sm);">
+        A representação espacial dos <strong style="color: var(--dark-800);">{{ resultado.qtd_paineis }}</strong> painéis de {{ resultado.potencia_painel_wp }}Wp sobre a estrutura projetada.
+    </p>
+    <div class="roof-perspective">
+        <div class="roof-grid" id="roof-grid">
+            <!-- Panels will be injected here via JavaScript -->
+        </div>
+    </div>
+</div>
+
+<!-- ================================================================== -->
 <!-- GRÁFICO DE GERAÇÃO MENSAL -->
 <!-- ================================================================== -->
 {% if resultado.analise_mensal %}
@@ -210,9 +225,16 @@
         <input type="hidden" name="nome_empresa" value="{{ dados_empresa.nome }}">
         <input type="hidden" name="telefone_empresa" value="{{ dados_empresa.telefone }}">
         <input type="hidden" name="email_empresa" value="{{ dados_empresa.email }}">
-        <button type="submit" class="btn btn-success btn-lg" id="btn-gerar-pdf">
-            📄 Baixar Proposta em PDF
-        </button>
+        <input type="hidden" name="potencia_painel_wp" value="{{ resultado.potencia_painel_wp }}">
+        
+        <div style="display: flex; gap: var(--space-4);">
+            <button type="submit" formaction="{% url 'relatorios:gerar_proposta_pdf' %}" class="btn btn-primary btn-lg" id="btn-gerar-pdf">
+                📄 Baixar Proposta em PDF
+            </button>
+            <button type="submit" formaction="{% url 'relatorios:gerar_contrato_pdf' %}" class="btn btn-outline btn-lg" style="border-color: #10B981; color: #10B981;" id="btn-gerar-contrato">
+                ✍️ Gerar Contrato Oficial
+            </button>
+        </div>
     </form>
 
     <!-- Botão Enviar WhatsApp -->
@@ -264,6 +286,28 @@
                 const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(texto)}`;
                 window.open(url, '_blank');
             });
+        }
+
+        // Lógica do Simulador Visual de Telhado (Raio-X)
+        const roofGrid = document.getElementById('roof-grid');
+        if(roofGrid) {
+            const qtd = parseInt("{{ resultado.qtd_paineis }}") || 0;
+            if(qtd > 0) {
+                // Desenhar as colunas para que pareçam retangulares e coesas
+                let cols = Math.ceil(Math.sqrt(qtd));
+                if(qtd % cols !== 0 && qtd > 10) { cols = Math.ceil(qtd / Math.ceil(qtd/cols)); }
+                roofGrid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+                
+                for(let i=0; i<qtd; i++) {
+                    const panel = document.createElement('div');
+                    panel.className = 'roof-panel';
+                    // Delay sequencial de animação
+                    panel.style.animationDelay = `${i * 0.05}s`;
+                    roofGrid.appendChild(panel);
+                }
+            } else {
+                roofGrid.innerHTML = "Qtd de painéis inválida.";
+            }
         }
     });
 </script>
