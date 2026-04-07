@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Resultado da Análise de Manutenção — Solvian{% endblock %}
+{% block title %}Resultado da Análise de Manutenção — RADIAX{% endblock %}
 
 {% block content %}
 <!-- ================================================================== -->
@@ -178,7 +178,7 @@
                 const saude = "{{ resultado.resumo.saude_sistema.nivel }}";
                 const alertas = "{{ resultado.resumo.total_alertas }}";
                 
-                let texto = `🤖 *Relatório de Manutenção Solvian*\n\n`;
+                let texto = `🤖 *Relatório de Manutenção RADIAX*\n\n`;
                 texto += `Verificamos o sistema solar de ${potencia} kWp:\n`;
                 texto += `🩺 *Saúde Atual:* ${saude}\n`;
                 texto += `⚠️ *Alertas Detectados:* ${alertas}\n\n`;

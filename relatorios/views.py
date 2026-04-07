@@ -52,7 +52,7 @@ class GerarPropostaPDFView(View):
             inclinacao = _parse_float(request.POST.get('inclinacao_telhado'), 15)
             orientacao = request.POST.get('orientacao', 'norte')
             area_disponivel = request.POST.get('area_disponivel')
-            nome_empresa = request.POST.get('nome_empresa', 'Solvian Energy')
+            nome_empresa = request.POST.get('nome_empresa', 'RADIAX Energy')
             telefone_empresa = request.POST.get('telefone_empresa', '')
             email_empresa = request.POST.get('email_empresa', '')
 
@@ -177,7 +177,7 @@ class GerarContratoPDFView(View):
             inclinacao = _parse_float(request.POST.get('inclinacao_telhado'), 15)
             orientacao = request.POST.get('orientacao', 'norte')
             area_disponivel = request.POST.get('area_disponivel')
-            nome_empresa = request.POST.get('nome_empresa', 'Solvian Energy')
+            nome_empresa = request.POST.get('nome_empresa', 'RADIAX Energy')
             telefone_empresa = request.POST.get('telefone_empresa', '')
             email_empresa = request.POST.get('email_empresa', '')
 

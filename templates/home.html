@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Solvian — Energia Solar Inteligente | Dimensionamento Automatizado{% endblock %}
+{% block title %}RADIAX — Precisão Solar: Dimensionamento e Gestão Exatos{% endblock %}
 
 {% block content %}
 <!-- ================================================================== -->
@@ -10,50 +10,47 @@
 <section class="hero" id="hero">
     <div class="hero-container">
         <div class="hero-content">
-            <div class="hero-badge">
-                ☀️ Plataforma All-in-One para Energia Solar
+            <div class="hero-badge" style="border-color: rgba(0,230,204,0.3); background: rgba(0,230,204,0.08); color: var(--rx-cyan);">
+                ⚡ O SaaS ideal para integradores fotovoltaicos no Brasil
             </div>
             <h1>
-                Dimensione sistemas solares com
-                <span>dados de satélite</span>
-                e inteligência artificial
+                <span>PRECISÃO SOLAR:</span><br>
+                DIMENSIONAMENTO<br>
+                E GESTÃO EXATOS.
             </h1>
-            <p class="hero-description">
-                Gere propostas comerciais profissionais em minutos.
-                Integração automática com a NASA POWER para dados reais de irradiação
-                solar e IA para manutenção preditiva.
+            <p class="hero-description" style="color: var(--dark-600);">
+                Gere propostas comerciais profissionais em minutos com dados reais de irradiação
+                da NASA POWER, contratos automáticos e manutenção preditiva com IA.
             </p>
             <div class="hero-actions">
-                <a href="{% url 'core:dimensionamento' %}" class="btn btn-primary btn-lg" id="btn-hero-dimensionar">
-                    ⚡ Dimensionar Sistema
-                </a>
-                <a href="{% url 'core:manutencao' %}" class="btn btn-secondary btn-lg" id="btn-hero-manutencao">
-                    🤖 Manutenção IA
+                <a href="{% url 'core:dimensionamento' %}" class="btn btn-primary btn-lg" id="btn-hero-dimensionar"
+                   style="background: var(--rx-orange); box-shadow: 0 4px 15px rgba(255,107,53,0.35); border-radius: var(--radius-full); padding: var(--space-4) var(--space-10);">
+                    Crie sua Conta Grátis
                 </a>
             </div>
         </div>
 
         <div class="hero-visual">
             <div class="hero-stats-grid">
-                <div class="stat-card">
-                    <div class="stat-icon">🛰️</div>
-                    <div class="stat-value">NASA</div>
-                    <div class="stat-label">Dados de Satélite</div>
+                <div class="stat-card" style="background: #FFFFFF; border: 1px solid var(--dark-200); box-shadow: var(--shadow-md);">
+                    <div class="stat-icon" style="color: var(--rx-orange);">⚡</div>
+                    <div class="stat-value" style="background: var(--gradient-solar); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">NASA</div>
+                    <div class="stat-label" style="color: var(--dark-500);">Dados de Satélite</div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-icon">📄</div>
-                    <div class="stat-value">PDF</div>
-                    <div class="stat-label">Propostas Profissionais</div>
+                <div class="stat-card" style="background: #FFFFFF; border: 1px solid var(--dark-200); box-shadow: var(--shadow-md);">
+                    <div class="stat-icon" style="color: var(--rx-cyan);">📄</div>
+                    <div class="stat-value" style="background: var(--gradient-solar); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">PDF</div>
+                    <div class="stat-label" style="color: var(--dark-500);">Propostas & Contratos</div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-icon">🤖</div>
-                    <div class="stat-value">IA</div>
-                    <div class="stat-label">Manutenção Preditiva</div>
+                <div class="stat-card" style="background: #FFFFFF; border: 1px solid var(--dark-200); box-shadow: var(--shadow-md);">
+                    <div class="stat-icon" style="color: var(--rx-orange);">🤖</div>
+                    <div class="stat-value" style="background: var(--gradient-solar); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">IA</div>
+                    <div class="stat-label" style="color: var(--dark-500);">Manutenção Preditiva</div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-icon">⚡</div>
-                    <div class="stat-value">100%</div>
-                    <div class="stat-label">Automatizado</div>
+                <div class="stat-card" style="background: #FFFFFF; border: 1px solid var(--dark-200); box-shadow: var(--shadow-md);">
+                    <div class="stat-icon" style="color: var(--rx-cyan);">🛰️</div>
+                    <div class="stat-value" style="background: var(--gradient-solar); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">100%</div>
+                    <div class="stat-label" style="color: var(--dark-500);">Automatizado</div>
                 </div>
             </div>
         </div>
@@ -61,71 +58,50 @@
 </section>
 
 <!-- ================================================================== -->
-<!-- FEATURES -->
+<!-- FEATURE CARDS (matching mockup layout) -->
 <!-- ================================================================== -->
-<section class="section" id="features">
+<section class="section" id="features" style="background: var(--dark-100);">
     <div class="container">
         <div class="section-header">
-            <div class="section-badge">🚀 Funcionalidades</div>
+            <div class="section-badge" style="background: rgba(0,230,204,0.08); border-color: rgba(0,230,204,0.2); color: var(--rx-cyan);">🚀 Funcionalidades</div>
             <h2 class="section-title">Tudo o que você precisa em um só lugar</h2>
             <p class="section-subtitle">
-                Do dimensionamento técnico à proposta comercial, passando pela manutenção preditiva com IA.
+                Do dimensionamento técnico à proposta comercial, com contratos automáticos e IA.
             </p>
         </div>
 
-        <div class="features-grid">
-            <div class="card">
-                <div class="card-icon solar">☀️</div>
-                <h3 class="card-title">Dimensionamento Solar</h3>
-                <p class="card-text">
-                    Cálculo preciso da potência, quantidade de painéis e geração estimada
-                    baseado no consumo real do cliente e dados climáticos da região.
-                </p>
+        <div class="features-grid" style="grid-template-columns: repeat(2, 1fr);">
+            <!-- Card 1 -->
+            <div class="card" style="display: flex; align-items: center; gap: var(--space-5); padding: var(--space-6);">
+                <div class="card-icon" style="background: rgba(255,107,53,0.1); color: var(--rx-orange); flex-shrink: 0;">⚡</div>
+                <div>
+                    <h3 class="card-title">Dimensionamento de Precisão</h3>
+                    <p class="card-text">Cálculo exato com dados de satélite NASA POWER e múltiplas configurações de painéis.</p>
+                </div>
             </div>
-
-            <div class="card">
-                <div class="card-icon blue">🛰️</div>
-                <h3 class="card-title">Dados de Satélite</h3>
-                <p class="card-text">
-                    Integração direta com a API NASA POWER para obter irradiação solar
-                    real via satélite. Médias climatológicas de 30 anos para qualquer localização.
-                </p>
+            <!-- Card 2 -->
+            <div class="card" style="display: flex; align-items: center; gap: var(--space-5); padding: var(--space-6);">
+                <div class="card-icon" style="background: rgba(0,230,204,0.1); color: var(--rx-cyan); flex-shrink: 0;">✍️</div>
+                <div>
+                    <h3 class="card-title">Contratos & Propostas PDF</h3>
+                    <p class="card-text">Gere propostas e contratos legais em PDF com um clique, prontos para assinatura.</p>
+                </div>
             </div>
-
-            <div class="card">
-                <div class="card-icon green">📄</div>
-                <h3 class="card-title">Proposta em PDF</h3>
-                <p class="card-text">
-                    Gere documentos PDF profissionais com análise técnica e financeira
-                    completa, prontos para enviar ao cliente.
-                </p>
+            <!-- Card 3 -->
+            <div class="card" style="display: flex; align-items: center; gap: var(--space-5); padding: var(--space-6);">
+                <div class="card-icon" style="background: rgba(255,107,53,0.1); color: var(--rx-orange); flex-shrink: 0;">📊</div>
+                <div>
+                    <h3 class="card-title">Análises de Mercado</h3>
+                    <p class="card-text">Pesquisa automática de kits solares no mercado com preços atualizados em tempo real.</p>
+                </div>
             </div>
-
-            <div class="card">
-                <div class="card-icon orange">🤖</div>
-                <h3 class="card-title">Manutenção Preditiva</h3>
-                <p class="card-text">
-                    Inteligência Artificial com Scikit-learn detecta anomalias na geração
-                    e prevê necessidades de manutenção antes que problemas ocorram.
-                </p>
-            </div>
-
-            <div class="card">
-                <div class="card-icon blue">💰</div>
-                <h3 class="card-title">Análise Financeira</h3>
-                <p class="card-text">
-                    Cálculo automático de payback, ROI, economia mensal e projeção
-                    financeira em 25 anos com reajuste tarifário.
-                </p>
-            </div>
-
-            <div class="card">
-                <div class="card-icon green">🌱</div>
-                <h3 class="card-title">Impacto Ambiental</h3>
-                <p class="card-text">
-                    Calcule o CO₂ evitado e a equivalência em árvores plantadas.
-                    Mostre ao cliente o impacto positivo da energia solar.
-                </p>
+            <!-- Card 4 -->
+            <div class="card" style="display: flex; align-items: center; gap: var(--space-5); padding: var(--space-6);">
+                <div class="card-icon" style="background: rgba(0,230,204,0.1); color: var(--rx-cyan); flex-shrink: 0;">🤖</div>
+                <div>
+                    <h3 class="card-title">Manutenção Preditiva com IA</h3>
+                    <p class="card-text">Scikit-learn detecta anomalias na geração e prevê manutenções antes de falhas.</p>
+                </div>
             </div>
         </div>
     </div>
@@ -136,13 +112,14 @@
 <!-- ================================================================== -->
 <section class="section" style="background: var(--gradient-dark); padding: var(--space-16) var(--space-6);">
     <div class="container" style="text-align: center;">
-        <h2 style="color: white; font-size: var(--font-size-3xl); font-weight: 800; margin-bottom: var(--space-4);">
+        <h2 style="color: #FFFFFF; font-size: var(--font-size-3xl); font-weight: 800; margin-bottom: var(--space-4);">
             Pronto para dimensionar seu primeiro sistema?
         </h2>
-        <p style="color: var(--dark-400); font-size: var(--font-size-lg); margin-bottom: var(--space-8); max-width: 600px; margin-left: auto; margin-right: auto;">
-            Preencha o formulário de dimensionamento e receba uma proposta completa em segundos, com dados reais de satélite.
+        <p style="color: rgba(255,255,255,0.5); font-size: var(--font-size-lg); margin-bottom: var(--space-8); max-width: 600px; margin-left: auto; margin-right: auto;">
+            Dados reais de satélite. Propostas e contratos automáticos. Tudo gratuito.
         </p>
-        <a href="{% url 'core:dimensionamento' %}" class="btn btn-primary btn-lg" id="btn-cta">
+        <a href="{% url 'core:dimensionamento' %}" class="btn btn-primary btn-lg" id="btn-cta"
+           style="background: var(--rx-orange); border-radius: var(--radius-full); padding: var(--space-4) var(--space-10);">
             ⚡ Começar Agora — É Gratuito
         </a>
     </div>

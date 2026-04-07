@@ -1,8 +1,8 @@
 /*
  * ============================================================================
- * SOLVIAN — Design System
- * Sistema de design premium para aplicação de energia solar.
- * Paleta: gradientes solares (amarelo/laranja) + azul escuro profissional.
+ * RADIAX — Design System
+ * Plataforma premium de dimensionamento solar para integradores B2B.
+ * Paleta: Radiant Orange · Electric Cyan · Midnight Blue · Steel Grey.
  * ============================================================================
  */
 
@@ -11,49 +11,62 @@
    ============================================================================ */
 
 :root {
-    /* Paleta de Cores — Solar */
-    --solar-50: #FFFBEB;
-    --solar-100: #FEF3C7;
-    --solar-200: #FDE68A;
-    --solar-300: #FCD34D;
-    --solar-400: #FBBF24;
-    --solar-500: #F59E0B;
-    --solar-600: #D97706;
-    --solar-700: #B45309;
+    /* Paleta Primária — RADIAX */
+    --rx-orange: #FF6B35;
+    --rx-orange-dark: #E55A2B;
+    --rx-orange-light: #FF8F66;
+    --rx-cyan: #00E6CC;
+    --rx-cyan-dark: #00C4AE;
+    --rx-cyan-light: #33FFEE;
+    --rx-midnight: #0D1B2A;
+    --rx-midnight-light: #1B2838;
+    --rx-midnight-lighter: #243447;
+    --rx-steel: #607D8B;
+    --rx-steel-light: #90A4AE;
 
-    /* Paleta de Cores — Laranja */
-    --orange-400: #FB923C;
-    --orange-500: #F97316;
-    --orange-600: #EA580C;
+    /* Legacy compat aliases (gradual migration) */
+    --solar-50: #FFF4ED;
+    --solar-100: #FFE4D4;
+    --solar-200: #FFC9A8;
+    --solar-300: #FFA775;
+    --solar-400: #FF8F66;
+    --solar-500: #FF6B35;
+    --solar-600: #E55A2B;
+    --solar-700: #C44A22;
 
-    /* Paleta — Azul Escuro (profissional) */
+    --orange-400: #FF8F66;
+    --orange-500: #FF6B35;
+    --orange-600: #E55A2B;
+
+    /* Paleta Neutra */
     --dark-50: #FFFFFF;
-    --dark-100: #FAFAFA;
-    --dark-200: #F4F4F5;
-    --dark-300: #E4E4E7;
-    --dark-400: #A1A1AA;
-    --dark-500: #71717A;
-    --dark-600: #52525B;
-    --dark-700: #3F3F46;
-    --dark-800: #27272A;
-    --dark-900: #18181B;
-    --dark-950: #09090B;
+    --dark-100: #F8FAFC;
+    --dark-200: #E2E8F0;
+    --dark-300: #CBD5E1;
+    --dark-400: #94A3B8;
+    --dark-500: #607D8B;
+    --dark-600: #475569;
+    --dark-700: #334155;
+    --dark-800: #1E293B;
+    --dark-900: #0F172A;
+    --dark-950: #020617;
 
     /* Cores de status */
-    --success: #F97316;
-    --success-light: #FFF7ED;
-    --warning: #F97316;
-    --warning-light: #FFF7ED;
-    --danger: #EA580C;
-    --danger-light: #FFF7ED;
-    --info: #FB923C;
-    --info-light: #FFF7ED;
+    --success: #10B981;
+    --success-light: #ECFDF5;
+    --warning: #F59E0B;
+    --warning-light: #FFFBEB;
+    --danger: #EF4444;
+    --danger-light: #FEF2F2;
+    --info: #00E6CC;
+    --info-light: #F0FDFA;
 
-    /* Gradientes */
-    --gradient-solar: linear-gradient(135deg, #F59E0B 0%, #F97316 50%, #EA580C 100%);
-    --gradient-dark: linear-gradient(135deg, #FFFFFF 0%, #FAFAFA 100%);
-    --gradient-glass: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
-    --gradient-hero: linear-gradient(135deg, #FFFFFF 0%, #FAFAFA 40%, #F4F4F5 100%);
+    /* Gradientes — RADIAX Identity */
+    --gradient-solar: linear-gradient(135deg, #FF6B35 0%, #E55A2B 100%);
+    --gradient-dark: linear-gradient(135deg, #0D1B2A 0%, #1B2838 100%);
+    --gradient-glass: linear-gradient(135deg, rgba(0,230,204,0.08) 0%, rgba(255,107,53,0.05) 100%);
+    --gradient-hero: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 40%, #F1F5F9 100%);
+    --gradient-cyan: linear-gradient(135deg, #00E6CC 0%, #00C4AE 100%);
 
     /* Tipografia */
     --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -95,8 +108,9 @@
     --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1);
     --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1);
     --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1);
-    --shadow-glow: 0 0 30px rgba(245, 158, 11, 0.3);
-    --shadow-glow-strong: 0 0 60px rgba(245, 158, 11, 0.4);
+    --shadow-glow: 0 0 30px rgba(255, 107, 53, 0.25);
+    --shadow-glow-strong: 0 0 60px rgba(255, 107, 53, 0.35);
+    --shadow-cyan: 0 0 30px rgba(0, 230, 204, 0.2);
 
     /* Transições */
     --transition-fast: 150ms ease;
@@ -106,6 +120,9 @@
     /* Z-index */
     --z-navbar: 1000;
     --z-modal: 1050;
+
+    /* Primary alias */
+    --primary-500: #FF6B35;
 }
 
 /* ============================================================================
@@ -180,15 +197,13 @@ ul, ol {
     left: 0;
     right: 0;
     z-index: var(--z-navbar);
-    background: rgba(255, 255, 255, 0.92);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(0,0,0,0.05);
+    background: var(--rx-midnight);
+    border-bottom: 1px solid rgba(0,230,204,0.1);
     transition: all var(--transition-base);
 }
 
 .navbar.scrolled {
-    background: rgba(255, 255, 255, 0.98);
+    background: rgba(13, 27, 42, 0.98);
     box-shadow: 0 4px 20px rgba(0,0,0,0.3);
 }
 
@@ -210,19 +225,16 @@ ul, ol {
 }
 
 .nav-logo {
-    width: 40px;
     height: 40px;
-    border-radius: var(--radius-md);
     object-fit: contain;
 }
 
 .nav-brand-text {
     font-size: var(--font-size-xl);
-    font-weight: 700;
-    background: var(--gradient-solar);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    font-weight: 800;
+    color: #FFFFFF;
+    letter-spacing: 2px;
+    text-transform: uppercase;
 }
 
 .nav-menu {
@@ -232,7 +244,7 @@ ul, ol {
 }
 
 .nav-link {
-    color: var(--dark-600);
+    color: rgba(255,255,255,0.7);
     font-size: var(--font-size-sm);
     font-weight: 500;
     padding: var(--space-2) var(--space-4);
@@ -242,13 +254,28 @@ ul, ol {
 }
 
 .nav-link:hover {
-    color: var(--solar-600);
-    background: rgba(249, 115, 22, 0.08);
+    color: #FFFFFF;
+    background: rgba(0,230,204,0.1);
 }
 
 .nav-link.active {
-    color: var(--solar-400);
-    background: rgba(245, 158, 11, 0.1);
+    color: var(--rx-cyan);
+    background: rgba(0,230,204,0.1);
+}
+
+.nav-cta {
+    background: var(--rx-orange);
+    color: #FFFFFF !important;
+    padding: var(--space-2) var(--space-5) !important;
+    border-radius: var(--radius-lg) !important;
+    font-weight: 600 !important;
+    transition: all var(--transition-fast);
+}
+
+.nav-cta:hover {
+    background: var(--rx-orange-dark) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(255,107,53,0.4);
 }
 
 /* Hamburger */
@@ -264,7 +291,7 @@ ul, ol {
     display: block;
     width: 24px;
     height: 2px;
-    background: var(--dark-800);
+    background: #FFFFFF;
     position: relative;
     transition: all var(--transition-fast);
 }
@@ -275,7 +302,7 @@ ul, ol {
     position: absolute;
     width: 24px;
     height: 2px;
-    background: var(--dark-800);
+    background: #FFFFFF;
     transition: all var(--transition-fast);
 }
 
@@ -303,7 +330,7 @@ ul, ol {
     right: -20%;
     width: 80%;
     height: 200%;
-    background: radial-gradient(circle, rgba(245, 158, 11, 0.08) 0%, transparent 60%);
+    background: radial-gradient(circle, rgba(255, 107, 53, 0.06) 0%, transparent 60%);
     pointer-events: none;
 }
 
@@ -314,7 +341,7 @@ ul, ol {
     left: -10%;
     width: 60%;
     height: 100%;
-    background: radial-gradient(circle, rgba(249, 115, 22, 0.05) 0%, transparent 50%);
+    background: radial-gradient(circle, rgba(0, 230, 204, 0.04) 0%, transparent 50%);
     pointer-events: none;
 }
 
@@ -714,8 +741,8 @@ ul, ol {
 .form-input:focus,
 .form-select:focus {
     outline: none;
-    border-color: var(--solar-500);
-    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2);
+    border-color: var(--rx-orange);
+    box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.15);
     background: #FFFFFF;
 }
 
@@ -760,7 +787,7 @@ ul, ol {
     left: 0;
     right: 0;
     bottom: 0;
-    background: radial-gradient(circle at 50% 50%, rgba(245, 158, 11, 0.1) 0%, transparent 60%);
+    background: radial-gradient(circle at 50% 50%, rgba(255, 107, 53, 0.08) 0%, transparent 60%);
 }
 
 .result-header h1 {

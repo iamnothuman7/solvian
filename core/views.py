@@ -75,7 +75,7 @@ class DimensionamentoView(FormView):
                 'longitude': dados['longitude'],
             },
             'dados_empresa': {
-                'nome': dados.get('nome_empresa', 'Solvian Energy'),
+                'nome': dados.get('nome_empresa', 'RADIAX Energy'),
                 'telefone': dados.get('telefone_empresa', ''),
                 'email': dados.get('email_empresa', ''),
             },
