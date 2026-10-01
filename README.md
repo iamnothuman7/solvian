@@ -1,55 +1,59 @@
-# Solvian — Energia Solar Inteligente
+# Solvian
 
-Sistema All-in-One para empresas de energia solar. Dimensionamento automatizado com dados de satélite (NASA POWER), geração de propostas em PDF e manutenção preditiva com Inteligência Artificial.
+Projeto acadêmico de Sistemas de Informação para estudar dimensionamento fotovoltaico em uma aplicação Django. Integra formulários, consulta de irradiação solar, estimativas de geração e documentos em PDF.
 
-## 🚀 Como Rodar Localmente
+## Escopo implementado
 
-```bash
-# 1. Criar ambiente virtual
-python3 -m venv venv
-source venv/bin/activate  # Linux/Mac
-# venv\Scripts\activate   # Windows
+- Dimensionamento a partir de consumo, localização e características da instalação.
+- Consulta à API NASA POWER, com cache e estimativas de contingência quando a consulta falha.
+- Comparação de geração mensal e detecção experimental de anomalias com Isolation Forest.
+- Geração de propostas em PDF com WeasyPrint.
+- Estimativas de economia e retorno com os parâmetros informados.
 
-# 2. Instalar dependências
-pip install -r requirements.txt
+Os cálculos são demonstrativos. Não substituem projeto de engenharia, inspeção de equipamentos ou análise financeira profissional. A detecção de anomalias não comprova a causa de uma falha. Dados estimados de contingência não devem ser confundidos com respostas da NASA.
 
-# 3. Executar migrations
-python manage.py migrate
+## Tecnologias e organização
 
-# 4. Rodar o servidor
-python manage.py runserver
+Python, Django, Pandas, NumPy, scikit-learn, Requests e WeasyPrint. SQLite é a configuração local padrão; a configuração também aceita `DATABASE_URL`.
+
+| Diretório | Responsabilidade |
+| --- | --- |
+| `core/` | Formulários, páginas e fluxo de interação |
+| `dimensionamento/` | Cálculos e análise experimental de geração |
+| `satelite/` | Integração NASA POWER e cache |
+| `relatorios/` | Documentos em PDF |
+| `templates/` e `static/` | Interface e recursos visuais |
+
+## Execução local
+
+Use Python compatível com as dependências fixadas em `requirements.txt`. O [Django 6.0 exige Python 3.12 ou posterior nas séries suportadas](https://docs.djangoproject.com/en/6.0/faq/install/). Instale também as dependências de sistema indicadas no [guia do WeasyPrint](https://doc.courtbouillon.org/weasyprint/stable/first_steps.html).
+
+```sh
+git clone https://github.com/iamnothuman7/solvian.git
+cd solvian
+python -m venv .venv
 ```
 
-Acesse: http://127.0.0.1:8000
+Ative o ambiente com `source .venv/bin/activate` no Linux/macOS ou `.venv\Scripts\Activate.ps1` no PowerShell. Depois:
 
-## 🛰️ Funcionalidades
+```sh
+python -m pip install -r requirements.txt
+python manage.py migrate
+python manage.py check
+python manage.py runserver 127.0.0.1:8000
+```
 
-- **Dimensionamento Solar**: Cálculo automático de potência, painéis e geração
-- **Dados de Satélite (NASA POWER)**: Irradiação solar real para qualquer localização
-- **Proposta em PDF**: Documento profissional para enviar ao cliente
-- **Manutenção Preditiva (IA)**: Detecção de anomalias com Scikit-learn
-- **Análise Financeira**: Payback, ROI, economia em 25 anos
+Abra `http://127.0.0.1:8000/`. Use dados fictícios ao explorar os formulários.
 
-## 🛠️ Stack Tecnológica
+## Configuração e limites atuais
 
-- **Backend**: Django (Python)
-- **Dados de Satélite**: API NASA POWER
-- **IA/ML**: Pandas + Scikit-learn
-- **PDF**: WeasyPrint
-- **Deploy**: Render.com
+- `SECRET_KEY`, `DEBUG` e `ALLOWED_HOSTS` são lidos do ambiente. A chave padrão serve apenas ao desenvolvimento local.
+- Os arquivos de testes existentes ainda são esboços. Não há cobertura funcional comprovada pelo simples comando `manage.py test`.
+- `render.yaml` ainda fixa Python 3.11.6, incompatível com o Django 6.0 declarado. Corrija a configuração e valide as dependências antes de tentar esse deploy.
+- Para PostgreSQL, instale e configure um driver compatível; a presença de `DATABASE_URL` não instala o driver.
+- Valide migrações de todos os aplicativos, geração de PDF, indisponibilidade da API e parâmetros dos cálculos antes de uso real.
+- As páginas de simulação são públicas; este projeto não oferece isolamento de clientes de um SaaS.
 
-## ☁️ Deploy no Render.com
+## Contribuições e uso
 
-1. Suba o código para o GitHub
-2. Acesse [render.com](https://render.com) e conecte o repositório
-3. Crie um **Web Service** com:
-   - **Build Command**: `./build.sh`
-   - **Start Command**: `gunicorn solvian.wsgi:application`
-4. Adicione as variáveis de ambiente:
-   - `SECRET_KEY` (gerar uma nova)
-   - `DEBUG` = `False`
-   - `ALLOWED_HOSTS` = `.onrender.com`
-
-## 📄 Licença
-
-Projeto acadêmico — TCC em Sistemas de Informação.
+Propostas de melhoria podem vir por issue ou pull request, com passos de reprodução e dados fictícios. Não publique credenciais ou dados de clientes. A identificação como projeto acadêmico não equivale a uma licença de software; este repositório não declara uma licença de redistribuição.
